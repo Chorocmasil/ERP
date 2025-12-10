@@ -27,7 +27,7 @@ function App() {
             <Route path="master" element={<MasterDashboard />} />
             <Route path="master/items" element={<ItemMaster />} />
             <Route path="master/boms" element={<BomMaster />} />
-            <Route path="master/lines" element={<ProcessLineMaster />} />
+            <Route path="master/process-lines" element={<ProcessLineMaster />} />
             <Route path="master/machines" element={<MachineMaster />} />
             <Route path="master/defect-codes" element={<DefectCodeMaster />} />
             <Route path="master/cause-codes" element={<CauseCodeMaster />} />

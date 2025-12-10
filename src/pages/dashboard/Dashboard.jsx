@@ -5,6 +5,18 @@ import { AlertTriangle, TrendingUp, Activity, CheckCircle } from 'lucide-react';
 
 import { useLanguage } from '../../context/LanguageContext';
 
+const Card = ({ title, value, icon, color }) => (
+  <div className="glass-panel p-4 flex items-center justify-between">
+    <div>
+      <p className="text-secondary text-sm">{title}</p>
+      <p className="text-2xl font-bold">{value}</p>
+    </div>
+    <div style={{ color: color, backgroundColor: `${color}20`, padding: '0.75rem', borderRadius: '50%' }}>
+      {icon}
+    </div>
+  </div>
+);
+
 const Dashboard = () => {
   const { t } = useLanguage();
   const [stats, setStats] = useState({
@@ -18,80 +30,68 @@ const Dashboard = () => {
   });
 
   useEffect(() => {
+    const calculateStats = () => {
+      const logs = dataService.getAll('defect_logs');
+      const machines = dataService.getAll('machines');
+      const lines = dataService.getAll('process_lines');
+      const defectCodes = dataService.getAll('defect_codes');
+
+      // 1. Basic Stats
+      const totalDefects = logs.length;
+      const openDefects = logs.filter(l => !l.action).length;
+
+      // 2. Process Defect Chart Data
+      const processCount = {};
+      logs.forEach(l => {
+        const lineName = lines.find(line => line.line_id === l.line_id)?.line_name || l.line_id;
+        processCount[lineName] = (processCount[lineName] || 0) + 1;
+      });
+      const processDefects = Object.keys(processCount).map(key => ({ name: key, count: processCount[key] }));
+
+      // 3. Machine Defect Chart Data
+      const machineCount = {};
+      logs.forEach(l => {
+        const machineName = machines.find(m => m.machine_id === l.machine_id)?.machine_name || l.machine_id;
+        machineCount[machineName] = (machineCount[machineName] || 0) + 1;
+      });
+      const machineDefects = Object.keys(machineCount).map(key => ({ name: key, count: machineCount[key] }));
+
+      // 4. ISO Group Chart Data
+      const isoCount = {};
+      logs.forEach(l => {
+        const code = defectCodes.find(d => d.code === l.defect_code);
+        const group = code?.iso_group || 'Unknown';
+        isoCount[group] = (isoCount[group] || 0) + 1;
+      });
+      const isoDefects = Object.keys(isoCount).map(key => ({ name: key, value: isoCount[key] }));
+
+      // 5. LOT Trend Data (Last 7 days or last 10 lots)
+      // Group by Date
+      const dateCount = {};
+      logs.forEach(l => {
+        const date = l.created_at.substring(0, 10);
+        dateCount[date] = (dateCount[date] || 0) + 1;
+      });
+      const lotTrend = Object.keys(dateCount).sort().map(date => ({ date, count: dateCount[date] }));
+
+      // 6. Warnings (Machines with > 3 defects)
+      const warnings = machineDefects.filter(m => m.count > 3);
+
+      setStats({
+        totalDefects,
+        openDefects,
+        processDefects,
+        machineDefects,
+        isoDefects,
+        lotTrend,
+        warnings
+      });
+    };
+
     calculateStats();
   }, []);
 
-  const calculateStats = () => {
-    const logs = dataService.getAll('defect_logs');
-    const machines = dataService.getAll('machines');
-    const lines = dataService.getAll('process_lines');
-    const defectCodes = dataService.getAll('defect_codes');
-
-    // 1. Basic Stats
-    const totalDefects = logs.length;
-    const openDefects = logs.filter(l => !l.action).length;
-
-    // 2. Process Defect Chart Data
-    const processCount = {};
-    logs.forEach(l => {
-      const lineName = lines.find(line => line.line_id === l.line_id)?.line_name || l.line_id;
-      processCount[lineName] = (processCount[lineName] || 0) + 1;
-    });
-    const processDefects = Object.keys(processCount).map(key => ({ name: key, count: processCount[key] }));
-
-    // 3. Machine Defect Chart Data
-    const machineCount = {};
-    logs.forEach(l => {
-      const machineName = machines.find(m => m.machine_id === l.machine_id)?.machine_name || l.machine_id;
-      machineCount[machineName] = (machineCount[machineName] || 0) + 1;
-    });
-    const machineDefects = Object.keys(machineCount).map(key => ({ name: key, count: machineCount[key] }));
-
-    // 4. ISO Group Chart Data
-    const isoCount = {};
-    logs.forEach(l => {
-      const code = defectCodes.find(d => d.code === l.defect_code);
-      const group = code?.iso_group || 'Unknown';
-      isoCount[group] = (isoCount[group] || 0) + 1;
-    });
-    const isoDefects = Object.keys(isoCount).map(key => ({ name: key, value: isoCount[key] }));
-
-    // 5. LOT Trend Data (Last 7 days or last 10 lots)
-    // Group by Date
-    const dateCount = {};
-    logs.forEach(l => {
-      const date = l.created_at.split('T')[0];
-      dateCount[date] = (dateCount[date] || 0) + 1;
-    });
-    const lotTrend = Object.keys(dateCount).sort().map(date => ({ date, count: dateCount[date] }));
-
-    // 6. Warnings (Machines with > 3 defects)
-    const warnings = machineDefects.filter(m => m.count > 3);
-
-    setStats({
-      totalDefects,
-      openDefects,
-      processDefects,
-      machineDefects,
-      isoDefects,
-      lotTrend,
-      warnings
-    });
-  };
-
   const COLORS = ['#3b82f6', '#22c55e', '#eab308', '#ef4444', '#8b5cf6'];
-
-  const Card = ({ title, value, icon, color }) => (
-    <div className="glass-panel p-4 flex items-center justify-between">
-      <div>
-        <p className="text-secondary text-sm">{title}</p>
-        <p className="text-2xl font-bold">{value}</p>
-      </div>
-      <div style={{ color: color, backgroundColor: `${color}20`, padding: '0.75rem', borderRadius: '50%' }}>
-        {icon}
-      </div>
-    </div>
-  );
 
   return (
     <div>
@@ -111,7 +111,7 @@ const Dashboard = () => {
         <div className="glass-panel p-4">
           <h3 className="text-lg mb-4">{t('defectsByProcess')}</h3>
           <div style={{ height: '300px' }}>
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0}>
               <BarChart data={stats.processDefects}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
                 <XAxis dataKey="name" stroke="var(--text-secondary)" />
@@ -130,7 +130,7 @@ const Dashboard = () => {
         <div className="glass-panel p-4">
           <h3 className="text-lg mb-4">{t('defectsByISOGroup')}</h3>
           <div style={{ height: '300px' }}>
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0}>
               <PieChart>
                 <Pie
                   data={stats.isoDefects}
@@ -160,7 +160,7 @@ const Dashboard = () => {
         <div className="glass-panel p-4">
           <h3 className="text-lg mb-4">{t('defectsByMachine')}</h3>
           <div style={{ height: '300px' }}>
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0}>
               <BarChart data={stats.machineDefects} layout="vertical">
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
                 <XAxis type="number" stroke="var(--text-secondary)" />
@@ -179,7 +179,7 @@ const Dashboard = () => {
         <div className="glass-panel p-4">
           <h3 className="text-lg mb-4">{t('defectTrend')}</h3>
           <div style={{ height: '300px' }}>
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0}>
               <LineChart data={stats.lotTrend}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
                 <XAxis dataKey="date" stroke="var(--text-secondary)" />
