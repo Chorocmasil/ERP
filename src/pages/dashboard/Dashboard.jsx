@@ -8,13 +8,15 @@ import { useUser } from '../../context/UserContext';
 import ProcessHeatmap from '../../components/ProcessHeatmap';
 
 const Card = ({ title, value, icon, color }) => (
-  <div className="glass-panel p-4 flex items-center justify-between">
-    <div>
-      <p className="text-secondary text-sm">{title}</p>
-      <p className="text-2xl font-bold">{value}</p>
-    </div>
-    <div style={{ color: color, backgroundColor: `${color}20`, padding: '0.75rem', borderRadius: '50%' }}>
-      {icon}
+  <div className="glass-panel p-6 flex flex-col justify-between relative overflow-hidden card-hover">
+    <div className="flex justify-between items-start">
+      <div>
+        <p className="text-secondary text-sm font-medium mb-1">{title}</p>
+        <h3 className="text-3xl font-bold text-primary">{value}</h3>
+      </div>
+      <div className="p-3 rounded-xl flex items-center justify-center" style={{ backgroundColor: `${color}10`, color: color }}>
+        {icon}
+      </div>
     </div>
   </div>
 );
@@ -102,7 +104,7 @@ const Dashboard = () => {
     calculateStats();
   }, [currentUser]);
 
-  const COLORS = ['#3b82f6', '#22c55e', '#eab308', '#ef4444', '#8b5cf6'];
+  const COLORS = ['#1D40A3', '#22c55e', '#eab308', '#ef4444', '#8b5cf6'];
 
   return (
     <div>
@@ -110,7 +112,7 @@ const Dashboard = () => {
 
       {/* KPI Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
-        <Card title={t('totalDefects')} value={stats.totalDefects} icon={<Activity size={24} />} color="#3b82f6" />
+        <Card title={t('totalDefects')} value={stats.totalDefects} icon={<Activity size={24} />} color="#1D40A3" />
         <Card title={t('openIssues')} value={stats.openDefects} icon={<AlertTriangle size={24} />} color="#ef4444" />
         <Card title={t('resolutionRate')} value={`${stats.totalDefects ? Math.round(((stats.totalDefects - stats.openDefects) / stats.totalDefects) * 100) : 100}%`} icon={<CheckCircle size={24} />} color="#22c55e" />
         <Card title={t('activeLines')} value={stats.processDefects.length} icon={<TrendingUp size={24} />} color="#eab308" />

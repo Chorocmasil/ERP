@@ -7,14 +7,17 @@ import { useUser } from '../context/UserContext';
 const Header = () => {
   const { t, language, toggleLanguage } = useLanguage();
   const { currentUser, setCurrentUser, managers } = useUser();
+  
   const headerStyle = {
     height: '64px',
-    backgroundColor: 'var(--bg-primary)', // Transparent/same as body for glass effect or distinct
-    borderBottom: '1px solid var(--border-color)',
+    backgroundColor: 'white',
+    color: 'var(--text-primary)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '0 2rem',
+    boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+    borderBottom: '1px solid var(--border-color)',
   };
 
   const iconButtonStyle = {
@@ -31,7 +34,7 @@ const Header = () => {
 
   return (
     <header style={headerStyle}>
-      <h2 className="text-xl">{t('overview')}</h2>
+      <h2 className="text-xl font-bold">{t('overview')}</h2>
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
         <button style={iconButtonStyle} onClick={toggleLanguage} title="Switch Language">
           {language === 'en' ? 'KO' : 'EN'}
@@ -48,17 +51,16 @@ const Header = () => {
               color: 'var(--text-primary)',
               border: '1px solid var(--border-color)',
               padding: '0.25rem 0.5rem',
-              borderRadius: 'var(--radius-md)',
-              fontSize: '0.875rem',
+              borderRadius: '4px',
               outline: 'none'
             }}
           >
-            {managers.map(manager => (
-              <option key={manager} value={manager}>{manager}</option>
+            {managers.map(m => (
+              <option key={m} value={m}>{m}</option>
             ))}
           </select>
-          <div style={{ ...iconButtonStyle, backgroundColor: 'var(--bg-tertiary)' }}>
-            <User size={20} />
+          <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--bg-tertiary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <User size={18} className="text-secondary" />
           </div>
         </div>
       </div>

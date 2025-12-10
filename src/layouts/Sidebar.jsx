@@ -19,18 +19,19 @@ const Sidebar = () => {
 
   const sidebarStyle = {
     width: '260px',
-    backgroundColor: 'var(--bg-secondary)',
-    borderRight: '1px solid var(--border-color)',
+    backgroundColor: 'var(--accent-primary)',
+    borderRight: 'none',
     display: 'flex',
     flexDirection: 'column',
     padding: '1.5rem',
+    color: 'white',
   };
 
   const logoStyle = {
     fontSize: '1.5rem',
     fontWeight: 'bold',
-    color: 'var(--accent-primary)',
-    marginBottom: '2rem',
+    color: 'white',
+    marginBottom: '3rem',
     display: 'flex',
     alignItems: 'center',
     gap: '0.5rem',
@@ -42,11 +43,11 @@ const Sidebar = () => {
     gap: '0.75rem',
     padding: '0.75rem 1rem',
     borderRadius: 'var(--radius-md)',
-    color: isActive ? 'white' : 'var(--text-secondary)',
-    backgroundColor: isActive ? 'var(--accent-primary)' : 'transparent',
+    color: isActive ? 'var(--accent-primary)' : 'rgba(255, 255, 255, 0.7)',
+    backgroundColor: isActive ? 'white' : 'transparent',
     marginBottom: '0.5rem',
     transition: 'all 0.2s',
-    fontWeight: isActive ? '500' : 'normal',
+    fontWeight: isActive ? '600' : 'normal',
   });
 
   return (

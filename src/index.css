@@ -1,23 +1,33 @@
 :root {
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
-  --bg-tertiary: #334155;
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --accent-primary: #3b82f6;
-  --accent-hover: #2563eb;
-  --accent-glow: rgba(59, 130, 246, 0.5);
+  /* Light Theme Palette */
+  --bg-primary: #f4f7fe; /* Light background for the app */
+  --bg-secondary: #ffffff; /* White for cards/sidebar */
+  --bg-tertiary: #f8fafc; /* Light gray for inputs/hovers */
+  
+  --text-primary: #1e293b; /* Dark text */
+  --text-secondary: #64748b; /* Muted text */
+  
+  --accent-primary: #1D40A3; /* Brand Color */
+  --accent-hover: #15307a;
+  --accent-glow: rgba(29, 64, 163, 0.2);
+  
   --danger: #ef4444;
-  --success: #22c55e;
-  --warning: #eab308;
-  --border-color: #334155;
-  --glass-bg: rgba(30, 41, 59, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  --success: #10b981;
+  --warning: #f59e0b;
+  
+  --border-color: #e2e8f0;
+  
+  /* Solid Card Styles (Replacing Glass) */
+  --glass-bg: #ffffff;
+  --glass-border: transparent;
+  
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  
   --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
+  --radius-lg: 1rem; /* More rounded like the reference */
+  
   --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -54,11 +64,11 @@ button {
   background: var(--bg-primary); 
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--bg-tertiary); 
+  background: #cbd5e1; 
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-secondary); 
+  background: #94a3b8; 
 }
 
 /* Animations */
@@ -69,8 +79,8 @@ button {
 
 .glass-panel {
   background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
+  /* Removed backdrop-filter for solid look */
+  border: 1px solid var(--border-color); /* Subtle border */
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   animation: fadeIn 0.4s ease-out;
@@ -91,7 +101,7 @@ button {
 
 .btn-primary:hover {
   background-color: var(--accent-hover);
-  box-shadow: 0 0 15px var(--accent-glow);
+  box-shadow: 0 4px 12px var(--accent-glow);
   transform: translateY(-1px);
 }
 
@@ -115,6 +125,7 @@ button {
 .text-lg { font-size: 1.125rem; font-weight: 600; }
 .text-xl { font-size: 1.25rem; font-weight: 600; }
 .text-2xl { font-size: 1.5rem; font-weight: 700; }
+.text-primary { color: var(--text-primary); }
 .text-secondary { color: var(--text-secondary); }
 .text-danger { color: var(--danger); }
 .text-success { color: var(--success); }
@@ -122,9 +133,45 @@ button {
 
 .mb-4 { margin-bottom: 1rem; }
 .mb-6 { margin-bottom: 1.5rem; }
+.mb-1 { margin-bottom: 0.25rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+
 .p-4 { padding: 1rem; }
+.p-3 { padding: 0.75rem; }
+.p-6 { padding: 1.5rem; }
+
 .gap-2 { gap: 0.5rem; }
 .gap-4 { gap: 1rem; }
 .w-full { width: 100%; }
 .mt-2 { margin-top: 0.5rem; }
 .mt-4 { margin-top: 1rem; }
+
+/* Layout Utilities */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.relative { position: relative; }
+.overflow-hidden { overflow: hidden; }
+.h-full { height: 100%; }
+.w-full { width: 100%; }
+
+/* Typography Utilities */
+.font-medium { font-weight: 500; }
+.font-bold { font-weight: 700; }
+
+/* Border Radius */
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-xl { border-radius: 0.75rem; }
+.rounded-full { border-radius: 9999px; }
+
+/* Effects */
+.card-hover {
+  transition: all 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}

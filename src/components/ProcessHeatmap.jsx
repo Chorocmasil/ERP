@@ -53,41 +53,37 @@ const ProcessHeatmap = () => {
   const getSeverityStyle = (count, avg, max) => {
     // If very low defects (<= 10), return green
     if (count <= 10) return {
-      backgroundColor: 'rgba(16, 185, 129, 0.1)',
-      borderColor: 'rgba(16, 185, 129, 0.3)',
-      color: '#10b981'
+      backgroundColor: 'rgba(16, 185, 129, 0.15)',
+      borderColor: '#10b981',
+      color: '#047857' // Darker green for text
     };
 
     // If below average, return neutral/yellow
     if (count <= avg) {
       return {
-        backgroundColor: 'rgba(234, 179, 8, 0.1)',
-        borderColor: 'rgba(234, 179, 8, 0.3)',
-        color: '#eab308'
+        backgroundColor: 'rgba(234, 179, 8, 0.15)',
+        borderColor: '#eab308',
+        color: '#b45309' // Darker yellow/orange for text
       };
     }
 
     // If above average, calculate intensity of red
-    // Normalize the excess over average to 0-1 range
     const range = Math.max(max - avg, 1);
     const intensity = Math.min((count - avg) / range, 1);
     
-    // Base red with increasing opacity based on intensity
-    // Min opacity 0.2, Max opacity 0.5 for background
-    const bgOpacity = 0.2 + (intensity * 0.3);
-    const borderOpacity = 0.4 + (intensity * 0.6);
+    const bgOpacity = 0.15 + (intensity * 0.2); // 0.15 to 0.35
 
     return {
       backgroundColor: `rgba(239, 68, 68, ${bgOpacity})`,
-      borderColor: `rgba(239, 68, 68, ${borderOpacity})`,
-      color: '#ef4444'
+      borderColor: '#ef4444',
+      color: '#b91c1c' // Darker red for text
     };
   };
 
   return (
     <div className="glass-panel" style={{ padding: '2rem' }}>
       <h3 className="text-lg mb-6" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <span style={{ width: '0.5rem', height: '1.5rem', backgroundColor: '#3b82f6', borderRadius: '0.125rem', display: 'inline-block' }}></span>
+        <span style={{ width: '0.5rem', height: '1.5rem', backgroundColor: 'var(--accent-primary)', borderRadius: '0.125rem', display: 'inline-block' }}></span>
         Process Line Heatmap
       </h3>
       
@@ -95,20 +91,19 @@ const ProcessHeatmap = () => {
         {lines.map(line => {
           const lineDefects = stats.lineStats[line.line_id] || 0;
           const lineMachines = machines.filter(m => m.line_id === line.line_id);
-          // For line header, we just use a simple check or maybe aggregate severity? 
-          // Let's keep line header simple for now, or use the same logic if applicable.
-          // Using a simplified logic for line header to avoid confusion
-          const lineSeverityStyle = lineDefects > (stats.avgMachineDefects * lineMachines.length) 
-            ? { backgroundColor: 'rgba(239, 68, 68, 0.2)', borderColor: 'rgba(239, 68, 68, 0.5)', color: '#ef4444' }
-            : { backgroundColor: 'rgba(16, 185, 129, 0.2)', borderColor: 'rgba(16, 185, 129, 0.5)', color: '#10b981' };
+          
+          const isHighDefect = lineDefects > (stats.avgMachineDefects * lineMachines.length);
+          const lineSeverityStyle = isHighDefect
+            ? { backgroundColor: 'rgba(239, 68, 68, 0.1)', borderColor: '#ef4444', color: '#ef4444' }
+            : { backgroundColor: 'rgba(16, 185, 129, 0.1)', borderColor: '#10b981', color: '#10b981' };
 
           return (
-            <div key={line.line_id} style={{ position: 'relative', padding: '1rem', border: '1px solid #334155', borderRadius: '0.5rem', background: 'rgba(30, 41, 59, 0.3)' }}>
+            <div key={line.line_id} style={{ position: 'relative', padding: '1.5rem', border: '1px solid var(--border-color)', borderRadius: '0.75rem', background: '#f8fafc', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
               {/* Line Header */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', borderBottom: '1px solid #334155', paddingBottom: '1rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
-                  <div style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>{line.line_name}</div>
-                  <div style={{ fontSize: '0.875rem', color: '#94a3b8' }}>Manager: {line.manager}</div>
+                  <div style={{ fontWeight: 'bold', fontSize: '1.1rem', color: 'var(--text-primary)' }}>{line.line_name}</div>
+                  <div style={{ fontSize: '0.875rem', color: 'var(--text-secondary)' }}>Manager: {line.manager}</div>
                 </div>
                 <div style={{
                   ...lineSeverityStyle,
@@ -132,7 +127,7 @@ const ProcessHeatmap = () => {
                     <div key={machine.machine_id} style={{ display: 'flex', alignItems: 'center', flex: 1, minWidth: '140px' }}>
                       {/* Arrow for flow */}
                       {idx > 0 && (
-                        <div style={{ color: '#4b5563', margin: '0 0.5rem' }}>→</div>
+                        <div style={{ color: 'var(--text-secondary)', margin: '0 0.5rem' }}>→</div>
                       )}
                       
                       <div style={{
@@ -145,21 +140,22 @@ const ProcessHeatmap = () => {
                         transition: 'all 0.3s',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '0.5rem'
+                        gap: '0.5rem',
+                        boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
                       }}>
-                        <div style={{ fontSize: '0.875rem', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={machine.machine_name}>
+                        <div style={{ fontSize: '0.875rem', fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: machineSeverityStyle.color }} title={machine.machine_name}>
                           {machine.machine_name}
                         </div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                          <span style={{ fontSize: '0.7rem', opacity: 0.7 }}>{machine.machine_id}</span>
-                          <span style={{ fontSize: '1.25rem', fontWeight: 'bold' }}>{machineDefects}</span>
+                          <span style={{ fontSize: '0.7rem', opacity: 0.8, color: 'var(--text-secondary)' }}>{machine.machine_id}</span>
+                          <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: machineSeverityStyle.color }}>{machineDefects}</span>
                         </div>
                       </div>
                     </div>
                   );
                 })}
                 {lineMachines.length === 0 && (
-                  <div style={{ color: '#64748b', fontSize: '0.875rem', fontStyle: 'italic' }}>No machines assigned</div>
+                  <div style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', fontStyle: 'italic' }}>No machines assigned</div>
                 )}
               </div>
             </div>
@@ -168,22 +164,22 @@ const ProcessHeatmap = () => {
       </div>
 
       {/* Legend */}
-      <div style={{ marginTop: '3rem', paddingTop: '1.5rem', borderTop: '1px solid #334155', display: 'flex', gap: '2rem', fontSize: '0.875rem' }}>
+      <div style={{ marginTop: '3rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border-color)', display: 'flex', gap: '2rem', fontSize: '0.875rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{ width: '0.75rem', height: '0.75rem', borderRadius: '50%', backgroundColor: '#10b981' }}></div>
-          <span style={{ color: '#94a3b8' }}>Good (≤10)</span>
+          <span style={{ color: 'var(--text-secondary)' }}>Good (≤10)</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{ width: '0.75rem', height: '0.75rem', borderRadius: '50%', backgroundColor: '#eab308' }}></div>
-          <span style={{ color: '#94a3b8' }}>Below Average</span>
+          <span style={{ color: 'var(--text-secondary)' }}>Below Average</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{ width: '0.75rem', height: '0.75rem', borderRadius: '50%', backgroundColor: '#ef4444', opacity: 0.5 }}></div>
-          <span style={{ color: '#94a3b8' }}>Above Average</span>
+          <span style={{ color: 'var(--text-secondary)' }}>Above Average</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <div style={{ width: '0.75rem', height: '0.75rem', borderRadius: '50%', backgroundColor: '#ef4444' }}></div>
-          <span style={{ color: '#94a3b8' }}>Critical (High)</span>
+          <span style={{ color: 'var(--text-secondary)' }}>Critical (High)</span>
         </div>
       </div>
     </div>
