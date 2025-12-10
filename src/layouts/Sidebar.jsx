@@ -3,16 +3,18 @@ import { Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, Database, Activity, ClipboardList, Settings } from 'lucide-react';
 
 import { useLanguage } from '../context/LanguageContext';
+import { useUser } from '../context/UserContext';
 
 const Sidebar = () => {
   const location = useLocation();
   const { t } = useLanguage();
+  const { currentUser } = useUser();
 
   const menuItems = [
     { path: '/', label: t('dashboard'), icon: <LayoutDashboard size={20} /> },
     { path: '/ai-events', label: t('aiEvents'), icon: <Activity size={20} /> },
     { path: '/defect-logs', label: t('defectLogs'), icon: <ClipboardList size={20} /> },
-    { path: '/master', label: t('masterData'), icon: <Database size={20} /> },
+    ...(currentUser === 'Project Manager' ? [{ path: '/master', label: t('masterData'), icon: <Database size={20} /> }] : []),
   ];
 
   const sidebarStyle = {
@@ -49,8 +51,9 @@ const Sidebar = () => {
 
   return (
     <aside style={sidebarStyle}>
-      <div style={logoStyle}>
-        <span>Cloud QM</span>
+      <div style={{ ...logoStyle, flexDirection: 'column', alignItems: 'flex-start', gap: '0.2rem' }}>
+        <span style={{ fontSize: '1rem', opacity: 0.9 }}>현대모비스 품질관리</span>
+        <span>Cloud ERP</span>
       </div>
       <nav>
         {menuItems.map((item) => (

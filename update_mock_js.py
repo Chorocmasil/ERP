@@ -63,8 +63,13 @@ lines_data = {
     'FG_CPT_001': [('L-CPT-01', 'HVAC Install', 1), ('L-CPT-02', 'Dashboard Assy', 2), ('L-CPT-03', 'Electronics Test', 3)]
 }
 
+managers = ['최성욱', '신승연', '유효열', '하승민']
+manager_idx = 0
+
 for fg_id, lines in lines_data.items():
-    process_lines.extend(lines)
+    for line in lines:
+        process_lines.append(line + (managers[manager_idx % len(managers)],))
+        manager_idx += 1
 
 # 3. Machines
 machines_map = {
@@ -155,7 +160,7 @@ while current_date <= END_DATE:
 
 js_items = [{"item_id": i[0], "item_name": i[1], "type": i[2], "unit": i[3]} for i in items]
 
-js_process_lines = [{"line_id": l[0], "line_name": l[1], "seq": l[2]} for l in process_lines]
+js_process_lines = [{"line_id": l[0], "line_name": l[1], "seq": l[2], "manager": l[3]} for l in process_lines]
 
 js_machines = [{"machine_id": m[0], "machine_name": m[1], "line_id": m[2]} for m in machines]
 
@@ -190,6 +195,10 @@ for lot in lots:
     line_machines = [m for m in machines if m[2] == line_id]
     if not line_machines:
         continue
+    
+    # Define clean lines (Hyundai Mobis scenario: some lines are very stable)
+    CLEAN_LINES = ['L-FEM-02', 'L-FCH-03', 'L-RCH-01', 'L-CPT-02']
+    VERY_CLEAN_LINES = ['L-FEM-03', 'L-CPT-03'] # Target < 10 defects
         
     for _ in range(EVENTS_PER_LOT):
         event_id = f"EVT{event_id_counter:06d}"
@@ -200,7 +209,15 @@ for lot in lots:
         timestamp = event_time.strftime('%Y-%m-%d %H:%M:%S')
         
         # Vary defect rate slightly per event/machine
-        local_defect_rate = max(0, min(1, random.gauss(base_defect_rate, 0.05)))
+        if line_id in VERY_CLEAN_LINES:
+             # Extremely low defect rate (0.02%) to ensure < 10 defects total
+             local_defect_rate = 0.0002
+        elif line_id in CLEAN_LINES:
+             # Very low defect rate for stable lines (0.1% to 0.5%)
+             local_defect_rate = random.uniform(0.001, 0.005)
+        else:
+             local_defect_rate = max(0, min(1, random.gauss(base_defect_rate, 0.05)))
+
         is_ng = random.random() < local_defect_rate
         
         sound_result = 'NG' if is_ng else 'OK'
@@ -263,7 +280,7 @@ js_content = f"""// Initial Data
 const initialData = {json.dumps(initial_data, indent=2)};
 
 // LocalStorage Key
-const STORAGE_KEY = 'cloud_qm_db_v3';
+const STORAGE_KEY = 'cloud_qm_db_v4';
 
 // Service Class
 class MockDataService {{

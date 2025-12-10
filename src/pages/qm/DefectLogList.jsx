@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { dataService } from '../../services/mockData';
 import Table from '../../components/Table';
 import Modal from '../../components/Modal';
 import { Filter, Save, AlertTriangle } from 'lucide-react';
+import { useUser } from '../../context/UserContext';
 
 const DefectLogList = () => {
+  const { currentUser } = useUser();
   const [logs, setLogs] = useState([]);
   const [filteredLogs, setFilteredLogs] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,27 +23,31 @@ const DefectLogList = () => {
     machine_id: ''
   });
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  const loadData = useCallback(() => {
+    let allLogs = dataService.getAll('defect_logs').sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    
+    if (currentUser !== 'Project Manager') {
+      const lines = dataService.getAll('process_lines').filter(l => l.manager === currentUser);
+      const lineIds = lines.map(l => l.line_id);
+      allLogs = allLogs.filter(l => lineIds.includes(l.line_id));
+    }
 
-  useEffect(() => {
-    applyFilters();
-  }, [logs, filters]);
-
-  const loadData = () => {
-    setLogs(dataService.getAll('defect_logs').sort((a, b) => new Date(b.created_at) - new Date(a.created_at)));
+    setLogs(allLogs);
     setCauseCodes(dataService.getAll('cause_codes'));
     setDefectCodes(dataService.getAll('defect_codes'));
-  };
+  }, [currentUser]);
 
-  const applyFilters = () => {
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
+
+  useEffect(() => {
     let result = logs;
     if (filters.lot_no) result = result.filter(l => l.lot_no.includes(filters.lot_no));
     if (filters.line_id) result = result.filter(l => l.line_id.includes(filters.line_id));
     if (filters.machine_id) result = result.filter(l => l.machine_id.includes(filters.machine_id));
     setFilteredLogs(result);
-  };
+  }, [logs, filters]);
 
   const handleEdit = (log) => {
     setEditingLog({ ...log });

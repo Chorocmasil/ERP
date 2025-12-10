@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { LanguageProvider } from './context/LanguageContext';
+import { UserProvider } from './context/UserContext';
 import MainLayout from './layouts/MainLayout';
 import Dashboard from './pages/dashboard/Dashboard';
 import AIEventList from './pages/ai/AIEventList';
@@ -18,23 +19,25 @@ import './App.css';
 function App() {
   return (
     <LanguageProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<MainLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="ai-events" element={<AIEventList />} />
-            <Route path="defect-logs" element={<DefectLogList />} />
-            <Route path="master" element={<MasterDashboard />} />
-            <Route path="master/items" element={<ItemMaster />} />
-            <Route path="master/boms" element={<BomMaster />} />
-            <Route path="master/process-lines" element={<ProcessLineMaster />} />
-            <Route path="master/machines" element={<MachineMaster />} />
-            <Route path="master/defect-codes" element={<DefectCodeMaster />} />
-            <Route path="master/cause-codes" element={<CauseCodeMaster />} />
-            <Route path="master/lots" element={<LotMaster />} />
-          </Route>
-        </Routes>
-      </Router>
+      <UserProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<MainLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path="ai-events" element={<AIEventList />} />
+              <Route path="defect-logs" element={<DefectLogList />} />
+              <Route path="master" element={<MasterDashboard />} />
+              <Route path="master/items" element={<ItemMaster />} />
+              <Route path="master/boms" element={<BomMaster />} />
+              <Route path="master/process-lines" element={<ProcessLineMaster />} />
+              <Route path="master/machines" element={<MachineMaster />} />
+              <Route path="master/defect-codes" element={<DefectCodeMaster />} />
+              <Route path="master/cause-codes" element={<CauseCodeMaster />} />
+              <Route path="master/lots" element={<LotMaster />} />
+            </Route>
+          </Routes>
+        </Router>
+      </UserProvider>
     </LanguageProvider>
   );
 }

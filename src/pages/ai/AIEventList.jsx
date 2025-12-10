@@ -1,21 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { dataService } from '../../services/mockData';
 import Table from '../../components/Table';
 import Modal from '../../components/Modal';
 import { Play, Eye, AlertTriangle, CheckCircle } from 'lucide-react';
+import { useUser } from '../../context/UserContext';
 
 const AIEventList = () => {
+  const { currentUser } = useUser();
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const loadEvents = useCallback(() => {
+    let allEvents = dataService.getAll('ai_events');
+    
+    if (currentUser !== 'Project Manager') {
+      const lines = dataService.getAll('process_lines').filter(l => l.manager === currentUser);
+      const lineIds = lines.map(l => l.line_id);
+      const machines = dataService.getAll('machines').filter(m => lineIds.includes(m.line_id));
+      const machineIds = machines.map(m => m.machine_id);
+      
+      allEvents = allEvents.filter(e => machineIds.includes(e.machine_id));
+    }
+
+    setEvents(allEvents);
+  }, [currentUser]);
+
   useEffect(() => {
     loadEvents();
-  }, []);
-
-  const loadEvents = () => {
-    setEvents(dataService.getAll('ai_events'));
-  };
+  }, [loadEvents]);
 
   const handleGenerate = () => {
     dataService.generateDummyEvents(5);

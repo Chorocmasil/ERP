@@ -8,7 +8,7 @@ const ProcessLineMaster = () => {
   const [lines, setLines] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
-  const [formData, setFormData] = useState({ line_id: '', line_name: '', seq: 1 });
+  const [formData, setFormData] = useState({ line_id: '', line_name: '', seq: 1, manager: '' });
 
   useEffect(() => {
     loadLines();
@@ -24,7 +24,7 @@ const ProcessLineMaster = () => {
       setFormData(item);
     } else {
       setEditingItem(null);
-      setFormData({ line_id: '', line_name: '', seq: lines.length + 1 });
+      setFormData({ line_id: '', line_name: '', seq: lines.length + 1, manager: '' });
     }
     setIsModalOpen(true);
   };
@@ -58,6 +58,7 @@ const ProcessLineMaster = () => {
   const columns = [
     { key: 'line_id', label: 'Line ID' },
     { key: 'line_name', label: 'Line Name' },
+    { key: 'manager', label: 'Manager' },
     { key: 'seq', label: 'Sequence' },
   ];
 
@@ -118,6 +119,15 @@ const ProcessLineMaster = () => {
               value={formData.line_name}
               onChange={(e) => setFormData({ ...formData, line_name: e.target.value })}
               required
+            />
+          </div>
+          <div>
+            <label style={labelStyle}>Manager</label>
+            <input
+              style={inputStyle}
+              value={formData.manager || ''}
+              onChange={(e) => setFormData({ ...formData, manager: e.target.value })}
+              placeholder="Enter manager name"
             />
           </div>
           <div>

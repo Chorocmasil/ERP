@@ -4,6 +4,8 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import { AlertTriangle, TrendingUp, Activity, CheckCircle } from 'lucide-react';
 
 import { useLanguage } from '../../context/LanguageContext';
+import { useUser } from '../../context/UserContext';
+import ProcessHeatmap from '../../components/ProcessHeatmap';
 
 const Card = ({ title, value, icon, color }) => (
   <div className="glass-panel p-4 flex items-center justify-between">
@@ -19,6 +21,7 @@ const Card = ({ title, value, icon, color }) => (
 
 const Dashboard = () => {
   const { t } = useLanguage();
+  const { currentUser } = useUser();
   const [stats, setStats] = useState({
     totalDefects: 0,
     openDefects: 0,
@@ -31,10 +34,18 @@ const Dashboard = () => {
 
   useEffect(() => {
     const calculateStats = () => {
-      const logs = dataService.getAll('defect_logs');
-      const machines = dataService.getAll('machines');
-      const lines = dataService.getAll('process_lines');
+      let logs = dataService.getAll('defect_logs');
+      let machines = dataService.getAll('machines');
+      let lines = dataService.getAll('process_lines');
       const defectCodes = dataService.getAll('defect_codes');
+
+      // Filter by Manager
+      if (currentUser !== 'Project Manager') {
+        lines = lines.filter(l => l.manager === currentUser);
+        const lineIds = lines.map(l => l.line_id);
+        machines = machines.filter(m => lineIds.includes(m.line_id));
+        logs = logs.filter(l => lineIds.includes(l.line_id));
+      }
 
       // 1. Basic Stats
       const totalDefects = logs.length;
@@ -89,7 +100,7 @@ const Dashboard = () => {
     };
 
     calculateStats();
-  }, []);
+  }, [currentUser]);
 
   const COLORS = ['#3b82f6', '#22c55e', '#eab308', '#ef4444', '#8b5cf6'];
 
@@ -196,9 +207,14 @@ const Dashboard = () => {
 
       </div>
 
+      {/* Process Heatmap */}
+      <div style={{ marginBottom: '6rem' }}>
+        <ProcessHeatmap />
+      </div>
+
       {/* Warning Cards */}
-      {stats.warnings.length > 0 && (
-        <div className="mb-8">
+      {currentUser === 'Project Manager' && stats.warnings.length > 0 && (
+        <div className="mb-8" style={{ marginTop: '4rem' }}>
           <h3 className="text-xl mb-4 text-danger flex items-center gap-2">
             <AlertTriangle /> {t('criticalEquipmentWarnings')}
           </h3>
