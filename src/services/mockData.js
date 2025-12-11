@@ -51084,6 +51084,37 @@ class MockDataService {
     }
     return false;
   }
+
+  generateDummyEvents(count = 5) {
+    const db = this.getDB();
+    const machines = db.machines || [];
+    const lots = db.lots || [];
+    const newEvents = [];
+
+    for (let i = 0; i < count; i++) {
+      const machine = machines[Math.floor(Math.random() * machines.length)];
+      const lot = lots[Math.floor(Math.random() * lots.length)];
+      const isNG = Math.random() > 0.8; // 20% chance of NG
+
+      const event = {
+        event_id: `EVT${Date.now()}${i}`,
+        timestamp: new Date().toISOString().replace('T', ' ').substring(0, 19),
+        machine_id: machine ? machine.machine_id : 'MC-UNKNOWN',
+        line_id: machine ? machine.line_id : 'L-UNKNOWN',
+        lot_no: lot ? lot.lot_no : 'LOT-UNKNOWN',
+        sound_result: isNG ? 'NG' : 'OK',
+        defect_type_ai: isNG ? ['Crack', 'Scratch', 'Dent', 'Dimension'][Math.floor(Math.random() * 4)] : null,
+        severity: isNG ? ['LOW', 'MEDIUM', 'HIGH'][Math.floor(Math.random() * 3)] : null
+      };
+      
+      newEvents.push(event);
+    }
+    
+    // Add to beginning of array to show newest first
+    db.ai_events = [...newEvents, ...(db.ai_events || [])];
+    this.saveDB(db);
+    return newEvents;
+  }
 }
 
 export const dataService = new MockDataService();

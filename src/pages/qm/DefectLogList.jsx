@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { dataService } from '../../services/mockData';
 import Table from '../../components/Table';
 import Modal from '../../components/Modal';
-import { Filter, Save, AlertTriangle } from 'lucide-react';
+import { Filter, Save, AlertTriangle, Search } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
 
 const DefectLogList = () => {
@@ -15,24 +15,27 @@ const DefectLogList = () => {
   // Master Data for Selects
   const [causeCodes, setCauseCodes] = useState([]);
   const [defectCodes, setDefectCodes] = useState([]);
+  const [availableLines, setAvailableLines] = useState([]);
 
   // Filters
   const [filters, setFilters] = useState({
     lot_no: '',
-    line_id: '',
-    machine_id: ''
+    line_id: 'all',
+    status: 'all'
   });
 
   const loadData = useCallback(() => {
     let allLogs = dataService.getAll('defect_logs').sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    let lines = dataService.getAll('process_lines');
     
     if (currentUser !== 'Project Manager') {
-      const lines = dataService.getAll('process_lines').filter(l => l.manager === currentUser);
+      lines = lines.filter(l => l.manager === currentUser);
       const lineIds = lines.map(l => l.line_id);
       allLogs = allLogs.filter(l => lineIds.includes(l.line_id));
     }
 
     setLogs(allLogs);
+    setAvailableLines(lines);
     setCauseCodes(dataService.getAll('cause_codes'));
     setDefectCodes(dataService.getAll('defect_codes'));
   }, [currentUser]);
@@ -43,9 +46,24 @@ const DefectLogList = () => {
 
   useEffect(() => {
     let result = logs;
-    if (filters.lot_no) result = result.filter(l => l.lot_no.includes(filters.lot_no));
-    if (filters.line_id) result = result.filter(l => l.line_id.includes(filters.line_id));
-    if (filters.machine_id) result = result.filter(l => l.machine_id.includes(filters.machine_id));
+    
+    // Filter by LOT No
+    if (filters.lot_no) {
+      result = result.filter(l => l.lot_no.toLowerCase().includes(filters.lot_no.toLowerCase()));
+    }
+    
+    // Filter by Line (Toggle)
+    if (filters.line_id !== 'all') {
+      result = result.filter(l => l.line_id === filters.line_id);
+    }
+    
+    // Filter by Status (Toggle)
+    if (filters.status === 'open') {
+      result = result.filter(l => !l.action);
+    } else if (filters.status === 'resolved') {
+      result = result.filter(l => l.action);
+    }
+
     setFilteredLogs(result);
   }, [logs, filters]);
 
@@ -107,26 +125,60 @@ const DefectLogList = () => {
       </div>
 
       {/* Filter Bar */}
-      <div className="glass-panel p-4 mb-4" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-        <Filter size={20} className="text-secondary" />
-        <input 
-          placeholder="Filter by LOT..." 
-          style={{ ...inputStyle, marginBottom: 0, width: '200px' }}
-          value={filters.lot_no}
-          onChange={e => setFilters({...filters, lot_no: e.target.value})}
-        />
-        <input 
-          placeholder="Filter by Line..." 
-          style={{ ...inputStyle, marginBottom: 0, width: '200px' }}
-          value={filters.line_id}
-          onChange={e => setFilters({...filters, line_id: e.target.value})}
-        />
-        <input 
-          placeholder="Filter by Machine..." 
-          style={{ ...inputStyle, marginBottom: 0, width: '200px' }}
-          value={filters.machine_id}
-          onChange={e => setFilters({...filters, machine_id: e.target.value})}
-        />
+      <div className="glass-panel p-6 mb-6">
+        <div className="flex flex-col gap-10">
+          
+          {/* Search */}
+          <div className="search-box">
+            <Search className="text-secondary mr-3" size={20} />
+            <input 
+              placeholder="Search by LOT No..." 
+              className="search-input"
+              value={filters.lot_no}
+              onChange={e => setFilters({...filters, lot_no: e.target.value})}
+            />
+          </div>
+
+          {/* Toggles */}
+          <div className="flex flex-col gap-4">
+            <div className="flex items-start gap-4">
+              <span className="text-sm font-medium text-secondary w-16 pt-2 shrink-0">Status:</span>
+              <div className="flex gap-2 flex-1 flex-wrap min-w-0">
+                {['all', 'open', 'resolved'].map(status => (
+                  <button
+                    key={status}
+                    className={`filter-chip ${filters.status === status ? 'active' : ''}`}
+                    onClick={() => setFilters({...filters, status})}
+                  >
+                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex items-start gap-4">
+              <span className="text-sm font-medium text-secondary w-16 pt-2 shrink-0">Line:</span>
+              <div className="flex gap-2 flex-1 flex-wrap min-w-0">
+                <button
+                  className={`filter-chip ${filters.line_id === 'all' ? 'active' : ''}`}
+                  onClick={() => setFilters({...filters, line_id: 'all'})}
+                >
+                  All Lines
+                </button>
+                {availableLines.map(line => (
+                  <button
+                    key={line.line_id}
+                    className={`filter-chip ${filters.line_id === line.line_id ? 'active' : ''}`}
+                    onClick={() => setFilters({...filters, line_id: line.line_id})}
+                  >
+                    {line.line_name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+        </div>
       </div>
 
       <Table

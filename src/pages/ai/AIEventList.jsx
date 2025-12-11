@@ -10,6 +10,7 @@ const AIEventList = () => {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showOnlyNG, setShowOnlyNG] = useState(false);
 
   const loadEvents = useCallback(() => {
     let allEvents = dataService.getAll('ai_events');
@@ -55,20 +56,33 @@ const AIEventList = () => {
 
   // Custom row rendering or data transformation could be done here
   // For now, we'll just map the data
-  const displayData = events.map(e => ({
-    ...e,
-    timestamp: new Date(e.timestamp).toLocaleString(),
-    sound_result: e.sound_result === 'NG' ? '❌ NG' : '✅ OK'
-  }));
+  const displayData = events
+    .filter(e => !showOnlyNG || e.sound_result === 'NG')
+    .map(e => ({
+      ...e,
+      timestamp: new Date(e.timestamp).toLocaleString(),
+      sound_result: e.sound_result === 'NG' ? '❌ NG' : '✅ OK'
+    }));
 
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <h1 className="text-2xl">AI Inspection Events</h1>
-        <button className="btn-primary flex-center gap-2" onClick={handleGenerate}>
-          <Play size={18} />
-          Simulate Incoming Events
-        </button>
+        <div className="flex items-center gap-4">
+          <label className="flex items-center gap-2 cursor-pointer select-none">
+            <input 
+              type="checkbox" 
+              checked={showOnlyNG} 
+              onChange={(e) => setShowOnlyNG(e.target.checked)}
+              className="w-4 h-4 accent-accent-primary"
+            />
+            <span className="text-sm font-medium">Show NG Only</span>
+          </label>
+          <button className="btn-primary flex-center gap-2" onClick={handleGenerate}>
+            <Play size={18} />
+            Simulate Incoming Events
+          </button>
+        </div>
       </div>
 
       <div className="glass-panel" style={{ overflowX: 'auto' }}>

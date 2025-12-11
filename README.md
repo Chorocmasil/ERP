@@ -1,65 +1,49 @@
-# ERP (Enterprise Resource Planning) System
+# Hyundai Mobis Cloud ERP (Quality Management System)
 
-이 프로젝트는 기업의 전사적 자원 관리를 효율적으로 수행하기 위해 구축된 웹 기반 ERP 시스템입니다. React와 Vite를 사용하여 빠르고 직관적인 사용자 경험을 제공하며, 기업 내 다양한 업무 프로세스를 통합 관리할 수 있도록 설계되었습니다.
+이 프로젝트는 현대모비스의 품질 관리(QM) 및 생산 공정 모니터링을 위해 특화된 웹 기반 ERP 시스템입니다. React와 Vite를 기반으로 구축되었으며, 직관적인 대시보드와 실시간 데이터 시각화를 통해 효율적인 품질 관리를 지원합니다.
 
 ## 📋 프로젝트 개요
 
-- **목표**: 기업의 인사, 재무, 물류, 생산 등 핵심 비즈니스 프로세스를 하나의 시스템으로 통합하여 업무 효율성 증대 및 데이터 기반의 의사결정 지원.
+- **목표**: 생산 라인의 품질 데이터 통합 관리, 실시간 공정 모니터링, 그리고 AI 기반의 이상 감지 및 리포팅.
 - **주요 특징**:
-  - 직관적인 UI/UX 대시보드
-  - 실시간 데이터 처리 및 리포팅
-  - 모듈화된 기능 설계로 확장성 용이
+  - **현대모비스 브랜딩**: 공식 브랜드 컬러(#1D40A3)와 플랫 디자인(Light Theme)을 적용한 전문적인 UI.
+  - **실시간 대시보드**: 공정별/설비별 결함 현황, KPI 카드, 트렌드 차트 제공.
+  - **공정 히트맵**: 생산 라인의 상태를 직관적으로 파악할 수 있는 시각화 도구.
 
 ## 🛠 주요 서비스 기능
 
-이 ERP 시스템은 다음과 같은 핵심 모듈을 포함합니다:
+### 1. 대시보드 (Dashboard)
+- **KPI 카드**: 총 결함 수, 미조치 건수, 조치율, 가동 라인 등 핵심 지표 요약.
+- **차트 시각화**: 공정별/설비별 결함 현황, ISO 그룹별 분석, 일별 결함 추세 그래프.
+- **공정 히트맵**: 각 공정 라인의 상태(정상/경고/위험)를 색상으로 시각화.
 
-### 1. 인사 관리 (HR)
-- 직원 정보 등록 및 관리
-- 근태 관리 (출퇴근 기록, 휴가 신청 및 승인)
-- 급여 관리 및 명세서 조회
-- 조직도 및 부서 관리
+### 2. 기준 정보 관리 (Master Data)
+- **BOM 관리**: 자재 명세서(Bill of Materials) 관리.
+- **코드 관리**: 결함 코드(Defect Code), 원인 코드(Cause Code) 표준화.
+- **설비/공정 관리**: 생산 라인(Process Line) 및 설비(Machine) 정보 등록.
+- **품목/LOT 관리**: 생산 품목 및 LOT 추적 관리.
 
-### 2. 재무/회계 (Finance)
-- 매출/매입 관리
-- 지출 결의 및 승인 프로세스
-- 실시간 재무 상태표 및 손익계산서 조회
-- 세금 계산서 발행 및 관리
+### 3. 품질 관리 (Quality Management)
+- **결함 이력 (Defect Logs)**: 실시간 결함 발생 로그 조회 및 필터링.
+- **AI 이벤트**: AI가 감지한 이상 징후 리스트 확인.
 
-### 3. 물류/재고 (Inventory)
-- 품목 등록 및 카테고리 관리
-- 입고/출고 처리 및 재고 현황 실시간 모니터링
-- 창고 관리 및 재고 조정
-- 발주 요청 및 구매 관리
-
-### 4. 영업/고객 관리 (Sales/CRM)
-- 고객사 정보 및 계약 관리
-- 견적서 작성 및 주문 처리
-- 영업 실적 분석 및 목표 관리
-
-### 5. 시스템 관리 (Admin)
-- 사용자 권한 관리 (RBAC)
-- 공통 코드 및 메뉴 설정
-- 시스템 로그 및 접속 기록 모니터링
+### 4. 시스템 관리
+- 다국어 지원 (한국어/영어).
+- 사용자 권한에 따른 데이터 접근 제어.
 
 ## 🔄 주요 업무 프로세스 흐름 (Workflow)
 
-ERP 시스템 내에서 데이터가 어떻게 흐르는지 보여주는 예시입니다. (주문에서 회계 처리까지)
-
 ```mermaid
 sequenceDiagram
-    participant User as 👤 사용자
-    participant Sales as 💼 영업 (Sales)
-    participant Inventory as 📦 재고 (Inventory)
-    participant Finance as 💰 회계 (Finance)
+    participant Sensor as � IoT 센서/작업자
+    participant System as �️ ERP 시스템
+    participant Manager as � 품질 관리자
 
-    User->>Sales: 주문 등록 (Order)
-    Sales->>Inventory: 출고 요청 (Request)
-    Inventory->>Inventory: 재고 확인 및 차감
-    Inventory-->>Sales: 출고 완료 확인
-    Sales->>Finance: 매출 확정 및 세금계산서 발행 요청
-    Finance->>Finance: 회계 전표 생성 (Journal Entry)
-    Finance-->>User: 프로세스 완료 알림
+    Sensor->>System: 결함 데이터 전송 (Defect Log)
+    System->>System: 데이터 분석 및 AI 이상 감지
+    System-->>Manager: 대시보드 업데이트 & 알림
+    Manager->>System: 결함 원인 분석 및 조치 입력
+    System->>System: 조치 결과 저장 및 통계 반영
 ```
 
 ---
@@ -67,9 +51,9 @@ sequenceDiagram
 ## 💻 기술 스택
 
 - **Frontend**: React, Vite
-- **Language**: JavaScript / TypeScript
-- **State Management**: (예: Redux, Zustand, Recoil 등 사용 시 기재)
-- **Styling**: (예: Tailwind CSS, Styled-components 등 사용 시 기재)
+- **Styling**: CSS Modules, Tailwind-like Utility Classes (Custom), Lucide React (Icons)
+- **Visualization**: Recharts (Charts), Custom Heatmap
+- **Deployment**: GitHub Pages
 
 ---
 

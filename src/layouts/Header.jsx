@@ -1,5 +1,6 @@
 import React from 'react';
 import { Bell, User } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 
 import { useLanguage } from '../context/LanguageContext';
 import { useUser } from '../context/UserContext';
@@ -7,6 +8,15 @@ import { useUser } from '../context/UserContext';
 const Header = () => {
   const { t, language, toggleLanguage } = useLanguage();
   const { currentUser, setCurrentUser, managers } = useUser();
+  const location = useLocation();
+
+  const getPageTitle = (pathname) => {
+    if (pathname === '/' || pathname === '/ERP/') return t('dashboard');
+    if (pathname.includes('/ai-events')) return 'AI Inspection Events';
+    if (pathname.includes('/defect-logs')) return 'Defect Logs';
+    if (pathname.includes('/master')) return 'Master Data';
+    return t('overview');
+  };
   
   const headerStyle = {
     height: '64px',
@@ -34,7 +44,7 @@ const Header = () => {
 
   return (
     <header style={headerStyle}>
-      <h2 className="text-xl font-bold">{t('overview')}</h2>
+      <h2 className="text-xl font-bold">{getPageTitle(location.pathname)}</h2>
       <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
         <button style={iconButtonStyle} onClick={toggleLanguage} title="Switch Language">
           {language === 'en' ? 'KO' : 'EN'}
