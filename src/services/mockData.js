@@ -1,5 +1,6 @@
 // Initial Data
 const initialData = {
+  "__schema_version": 7,
   "items": [
     {
       "item_id": "FG_FEM_001",
@@ -545,14 +546,20 @@ const initialData = {
       "name": "Noise Defect",
       "category": "Acoustic",
       "iso_group": "Q-AC",
-      "iso_code": "Q-AC-0001"
+      "iso_code": "Q-AC-0001",
+      "inspection_method": "Sound Sensor",
+      "criteria_text": "Noise level > 75dB",
+      "guide_image_url": "https://placehold.co/100x100?text=Noise"
     },
     {
       "code": "D-AC-002",
       "name": "Vibration Defect",
       "category": "Acoustic",
       "iso_group": "Q-AC",
-      "iso_code": "Q-AC-0002"
+      "iso_code": "Q-AC-0002",
+      "inspection_method": "Vibration Sensor",
+      "criteria_text": "Vibration > 0.5mm/s",
+      "guide_image_url": "https://placehold.co/100x100?text=Vibration"
     },
     {
       "code": "D-DIM-001",
@@ -733,6 +740,72 @@ const initialData = {
       "product_id": "FG_RCH_001",
       "line_id": "L-RCH-01",
       "date": "2024-01-06"
+    },
+    {
+      "lot_no": "LOT-RM-STEEL-001",
+      "product_id": "RM_SB_001",
+      "line_id": "RM-WH-01",
+      "date": "2024-03-30"
+    },
+    {
+      "lot_no": "LOT-RM-PAINT-002",
+      "product_id": "RM_PNT_001",
+      "line_id": "RM-WH-01",
+      "date": "2024-03-30"
+    },
+    {
+      "lot_no": "LOT-SUB-COIL-STEEL-01",
+      "product_id": "RM_COIL_001",
+      "line_id": "SUP-STEEL-01",
+      "date": "2024-03-29"
+    },
+    {
+      "lot_no": "LOT-SUB-WELD-WIRE-01",
+      "product_id": "RM_WWIRE_001",
+      "line_id": "SUP-WELD-01",
+      "date": "2024-03-29"
+    },
+    {
+      "lot_no": "LOT-SUB-SOLVENT-01",
+      "product_id": "RM_SOLV_001",
+      "line_id": "SUP-PAINT-01",
+      "date": "2024-03-29"
+    },
+    {
+      "lot_no": "LOT-SUB-HARDENER-01",
+      "product_id": "RM_HARD_001",
+      "line_id": "SUP-PAINT-01",
+      "date": "2024-03-29"
+    },
+    {
+      "lot_no": "LOT-WIP-PRESS-20240331-01",
+      "product_id": "PROC_PRESS",
+      "line_id": "P-PRS-01",
+      "date": "2024-03-31"
+    },
+    {
+      "lot_no": "LOT-WIP-WELD-20240331-01",
+      "product_id": "PROC_WELD",
+      "line_id": "P-WELD-01",
+      "date": "2024-03-31"
+    },
+    {
+      "lot_no": "LOT-WIP-PAINT-20240331-01",
+      "product_id": "PROC_PAINT",
+      "line_id": "P-PNT-01",
+      "date": "2024-03-31"
+    },
+    {
+      "lot_no": "LOT-WIP-ASSY-20240331-01",
+      "product_id": "PROC_ASSY",
+      "line_id": "P-ASSY-01",
+      "date": "2024-03-31"
+    },
+    {
+      "lot_no": "LOT-WIP-INSP-20240331-01",
+      "product_id": "PROC_INSP",
+      "line_id": "P-INSP-01",
+      "date": "2024-03-31"
     },
     {
       "lot_no": "LOT20240106-RCH-70",
@@ -51018,11 +51091,426 @@ const initialData = {
       "created_at": "2024-03-31 09:51:19",
       "updated_at": "2024-03-31 09:51:19"
     }
+  ],
+  "lot_traceability": [
+    {
+      "parent_lot_no": "LOT20240331-FCH-47",
+      "child_lot_no": "LOT-RM-STEEL-001",
+      "component_id": "RM_SB_001",
+      "input_qty": 10
+    },
+    {
+      "parent_lot_no": "LOT20240331-FCH-47",
+      "child_lot_no": "LOT-RM-PAINT-002",
+      "component_id": "RM_PNT_001",
+      "input_qty": 5
+    },
+    {
+      "parent_lot_no": "LOT-RM-STEEL-001",
+      "child_lot_no": "LOT-SUB-COIL-STEEL-01",
+      "component_id": "RM_COIL_001",
+      "input_qty": 1
+    },
+    {
+      "parent_lot_no": "LOT-RM-STEEL-001",
+      "child_lot_no": "LOT-SUB-WELD-WIRE-01",
+      "component_id": "RM_WWIRE_001",
+      "input_qty": 2
+    },
+    {
+      "parent_lot_no": "LOT-RM-PAINT-002",
+      "child_lot_no": "LOT-SUB-SOLVENT-01",
+      "component_id": "RM_SOLV_001",
+      "input_qty": 1
+    },
+    {
+      "parent_lot_no": "LOT-RM-PAINT-002",
+      "child_lot_no": "LOT-SUB-HARDENER-01",
+      "component_id": "RM_HARD_001",
+      "input_qty": 1
+    },
+    {
+      "parent_lot_no": "LOT20240331-FCH-47",
+      "child_lot_no": "LOT-WIP-PRESS-20240331-01",
+      "component_id": "PROC_PRESS",
+      "input_qty": 1
+    },
+    {
+      "parent_lot_no": "LOT-WIP-PRESS-20240331-01",
+      "child_lot_no": "LOT-WIP-WELD-20240331-01",
+      "component_id": "PROC_WELD",
+      "input_qty": 1
+    },
+    {
+      "parent_lot_no": "LOT-WIP-WELD-20240331-01",
+      "child_lot_no": "LOT-WIP-PAINT-20240331-01",
+      "component_id": "PROC_PAINT",
+      "input_qty": 1
+    },
+    {
+      "parent_lot_no": "LOT-WIP-PAINT-20240331-01",
+      "child_lot_no": "LOT-WIP-ASSY-20240331-01",
+      "component_id": "PROC_ASSY",
+      "input_qty": 1
+    },
+    {
+      "parent_lot_no": "LOT-WIP-ASSY-20240331-01",
+      "child_lot_no": "LOT-WIP-INSP-20240331-01",
+      "component_id": "PROC_INSP",
+      "input_qty": 1
+    }
+  ],
+  "claims": [
+    {
+      "claim_id": "CLM-2024-001",
+      "customer": "Hyundai Motor",
+      "model": "IONIQ 5",
+      "issue_date": "2024-03-15",
+      "description": "Front bumper paint peeling off",
+      "status": "In Progress",
+      "d0_symptom": "Paint peeling observed on 5 units",
+      "d1_team": "Quality Team A",
+      "d2_problem": "Adhesion failure in paint process",
+      "d3_containment": "Quarantine affected lot",
+      "d4_root_cause": "Temperature fluctuation in drying oven",
+      "d5_corrective_action": "Install new temperature controller",
+      "d6_validation": "Test run with new controller passed",
+      "d7_prevention": "Update maintenance schedule",
+      "d8_closure": "Pending final review"
+    },
+    {
+      "claim_id": "CLM-2024-002",
+      "customer": "Kia",
+      "model": "EV6",
+      "issue_date": "2024-04-02",
+      "description": "Intermittent door trim rattling noise",
+      "status": "Open",
+      "d0_symptom": "Rattling noise reported during driving on rough roads",
+      "d1_team": "SQE + NVH Taskforce",
+      "d2_problem": "Noise occurs from passenger-side door trim under vibration",
+      "d3_containment": "Hold shipment for affected day-lots and add 100% tap test",
+      "d4_root_cause": "Insufficient clip insertion force due to worn assembly jig",
+      "d5_corrective_action": "Replace jig and add torque/press force verification",
+      "d6_validation": "No rattle observed in 30-vehicle road test after countermeasure",
+      "d7_prevention": "Add weekly jig wear check and operator check sheet",
+      "d8_closure": "Awaiting customer validation on next delivery"
+    },
+    {
+      "claim_id": "CLM-2024-003",
+      "customer": "Hyundai Motor",
+      "model": "IONIQ 6",
+      "issue_date": "2024-04-18",
+      "description": "Charging port cover does not close smoothly",
+      "status": "In Progress",
+      "d0_symptom": "Cover gap and stiffness observed on 3 units",
+      "d1_team": "Quality Team B + Process Engineering",
+      "d2_problem": "Hinge movement resistance exceeds spec in assembly",
+      "d3_containment": "Rework in-line: apply hinge alignment check + lubrication",
+      "d4_root_cause": "Hinge bracket burr from stamping process causing interference",
+      "d5_corrective_action": "Add deburring step + go/no-go gauge for bracket",
+      "d6_validation": "Gauge Cpk improved and cover closing force meets spec",
+      "d7_prevention": "Update control plan and incoming inspection for brackets",
+      "d8_closure": "In progress (monitoring for 4 weeks)"
+    },
+    {
+      "claim_id": "CLM-2024-004",
+      "customer": "Genesis",
+      "model": "GV70",
+      "issue_date": "2024-05-06",
+      "description": "Dashboard warning due to intermittent sensor signal",
+      "status": "Closed",
+      "d0_symptom": "Warning lamp flashes; DTC recorded intermittently",
+      "d1_team": "Quality + Electronics Supplier Support",
+      "d2_problem": "Signal dropout occurs during vibration and temperature cycling",
+      "d3_containment": "Implement additional connector seating inspection for shipment",
+      "d4_root_cause": "Connector terminal plating thickness variation at supplier",
+      "d5_corrective_action": "Supplier process correction + 100% terminal gauge check",
+      "d6_validation": "Thermal/vibration validation passed (48h) with corrected parts",
+      "d7_prevention": "Supplier audit + add incoming AQL tightening for terminals",
+      "d8_closure": "Customer confirmed: issue resolved; close 8D"
+    },
+    {
+      "claim_id": "CLM-2024-005",
+      "customer": "Hyundai Motor",
+      "model": "Tucson",
+      "issue_date": "2024-05-20",
+      "description": "Seat stitching defect on driver seat",
+      "status": "Open",
+      "d0_symptom": "Loose stitching observed on 2 units at PDI",
+      "d1_team": "Incoming QC + Seat Supplier",
+      "d2_problem": "Stitch pitch inconsistent near seat edge",
+      "d3_containment": "Block suspect supplier lot; sort at warehouse",
+      "d4_root_cause": "Needle wear not detected due to missing preventive replacement",
+      "d5_corrective_action": "Define needle replacement interval + add visual standard",
+      "d6_validation": "Pilot run meets appearance standard (A-surface check passed)",
+      "d7_prevention": "Update supplier PFMEA and line audit checklist",
+      "d8_closure": "Open (pending supplier corrective action evidence)"
+    },
+    {
+      "claim_id": "CLM-2024-006",
+      "customer": "Kia",
+      "model": "Sorento",
+      "issue_date": "2024-06-03",
+      "description": "Water leak reported from rear lamp area",
+      "status": "In Progress",
+      "d0_symptom": "Moisture detected inside rear lamp housing",
+      "d1_team": "Quality + Sealing Specialist",
+      "d2_problem": "Leak path suspected around lamp gasket interface",
+      "d3_containment": "Apply additional sealant for affected lots and re-test",
+      "d4_root_cause": "Gasket compression set due to incorrect storage temperature",
+      "d5_corrective_action": "Revise gasket storage requirement + incoming compression test",
+      "d6_validation": "Water spray test passed on 20 samples after countermeasure",
+      "d7_prevention": "Add warehouse temperature monitoring + FIFO enforcement",
+      "d8_closure": "In progress (customer field monitoring ongoing)"
+    }
   ]
 };
 
+// --- 초기 DB 확장(웹 UI에서 생성하지 않고, 소스의 '내부 DB'에 직접 포함) ---
+
+function safeStr(value) {
+  return value == null ? '' : String(value);
+}
+
+function toYmd(value) {
+  const s = safeStr(value);
+  return s.length >= 10 ? s.substring(0, 10) : s;
+}
+
+function dateDistanceDays(aYmd, bYmd) {
+  try {
+    const a = new Date(aYmd);
+    const b = new Date(bYmd);
+    return Math.abs((a.getTime() - b.getTime()) / (1000 * 60 * 60 * 24));
+  } catch {
+    return Number.POSITIVE_INFINITY;
+  }
+}
+
+function expandInitialBoms(db, options = {}) {
+  const {
+    fgMin = 8,
+    rmMin = 2,
+    otherMin = 1
+  } = options;
+
+  const items = db.items || [];
+  const boms = Array.isArray(db.boms) ? db.boms : [];
+
+  const rmItems = items.filter((i) => safeStr(i.item_id).startsWith('RM_'));
+  const allMaterials = rmItems.length ? rmItems : items;
+
+  const pickN = (arr, n, excludeId) => {
+    const pool = arr.filter((x) => x?.item_id && x.item_id !== excludeId);
+    if (pool.length === 0) return [];
+    const a = pool.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a.slice(0, Math.min(n, a.length));
+  };
+
+  const ensureBom = (productId, minCount, materialPool) => {
+    let bom = boms.find((b) => b.product_id === productId);
+    if (!bom) {
+      const picks = pickN(materialPool, minCount, productId);
+      bom = {
+        product_id: productId,
+        materials: picks.map((p) => ({ material_id: p.item_id, qty: 1 + Math.floor(Math.random() * 4) }))
+      };
+      boms.push(bom);
+      return;
+    }
+
+    const materials = Array.isArray(bom.materials) ? bom.materials : [];
+    const ids = new Set(materials.map((m) => m.material_id));
+    if (materials.length < minCount) {
+      const need = minCount - materials.length;
+      const candidates = materialPool.filter((i) => i.item_id && !ids.has(i.item_id) && i.item_id !== productId);
+      const add = pickN(candidates, need, productId);
+      add.forEach((p) => {
+        materials.push({ material_id: p.item_id, qty: 1 + Math.floor(Math.random() * 4) });
+        ids.add(p.item_id);
+      });
+      bom.materials = materials;
+    }
+  };
+
+  for (const it of items) {
+    const id = it?.item_id;
+    if (!id) continue;
+    if (safeStr(id).startsWith('FG_')) {
+      ensureBom(id, fgMin, rmItems);
+    } else if (safeStr(id).startsWith('RM_')) {
+      ensureBom(id, rmMin, rmItems);
+    } else {
+      ensureBom(id, otherMin, allMaterials);
+    }
+  }
+
+  db.boms = boms;
+}
+
+function expandInitialTraceability(db, options = {}) {
+  const {
+    maxMaterialsPerLot = Number.POSITIVE_INFINITY,
+    forwardCoverLinksPerRmLot = 3
+  } = options;
+
+  const lots = db.lots || [];
+  const boms = db.boms || [];
+  const trace = Array.isArray(db.lot_traceability) ? db.lot_traceability : [];
+
+  const fgLots = lots.filter((l) => safeStr(l.product_id).startsWith('FG_'));
+
+  const pickRmLot = (materialId, fgYmd) => {
+    const candidates = lots.filter((l) => l.product_id === materialId);
+    if (candidates.length === 0) return null;
+    const same = fgYmd ? candidates.find((c) => toYmd(c.date || c.created_at) === fgYmd) : null;
+    if (same) return same;
+    if (!fgYmd) return candidates[0];
+    let best = candidates[0];
+    let bestDist = dateDistanceDays(toYmd(best.date || best.created_at), fgYmd);
+    for (const c of candidates.slice(1)) {
+      const dist = dateDistanceDays(toYmd(c.date || c.created_at), fgYmd);
+      if (dist < bestDist) {
+        best = c;
+        bestDist = dist;
+      }
+    }
+    return best;
+  };
+
+  const keyOf = (r) => `${r.parent_lot_no}__${r.child_lot_no}__${r.component_id}`;
+  const existing = new Set(trace.map(keyOf));
+
+  // RM LOT이 부족하거나 아예 없으면, defect_logs/FG LOT 기반으로 필요한 RM LOT을 생성합니다.
+  // (요구: 불량로그에서 어떤 LOT을 클릭해도 역추적이 '무조건' 되게)
+  const ensureRmLot = (materialId, fgLot) => {
+    const candidates = lots.filter((l) => l.product_id === materialId);
+    if (candidates.length > 0) return candidates[0];
+
+    const fgYmd = toYmd(fgLot?.date || fgLot?.created_at);
+    const newLotNo = `LOT-${materialId.replace(/[^A-Z0-9_]/g, '')}-${fgYmd || '0000-00-00'}-${String(fgLot?.line_id || 'L').replace(/[^A-Z0-9_-]/g, '')}`;
+    const rm = {
+      lot_no: newLotNo,
+      product_id: materialId,
+      line_id: 'RM-WH-01',
+      date: fgYmd,
+      created_at: fgLot?.created_at || ''
+    };
+    lots.push(rm);
+    return rm;
+  };
+
+  // FG -> RM (BOM 기반)
+  for (const fgLot of fgLots) {
+    const bom = boms.find((b) => b.product_id === fgLot.product_id);
+    if (!bom?.materials?.length) continue;
+    const fgYmd = toYmd(fgLot.date || fgLot.created_at);
+    const mats = Number.isFinite(maxMaterialsPerLot) ? bom.materials.slice(0, maxMaterialsPerLot) : bom.materials;
+    for (const m of mats) {
+      // 기존 RM LOT이 있으면 매칭, 없으면 생성
+      const rmLot = pickRmLot(m.material_id, fgYmd) || ensureRmLot(m.material_id, fgLot);
+      if (!rmLot) continue;
+      const rel = {
+        parent_lot_no: fgLot.lot_no,
+        child_lot_no: rmLot.lot_no,
+        component_id: m.material_id,
+        input_qty: m.qty
+      };
+      const k = keyOf(rel);
+      if (existing.has(k)) continue;
+      existing.add(k);
+      trace.push(rel);
+    }
+  }
+
+  // forward 커버: trace에 전혀 안 걸린 RM/PROC LOT을 날짜 근접 FG에 연결
+  if (forwardCoverLinksPerRmLot > 0 && fgLots.length > 0) {
+    const fgIndex = fgLots
+      .map((l) => ({ lot: l, ymd: toYmd(l.date || l.created_at) }))
+      .filter((x) => x.ymd);
+
+    const rmLikeLots = lots.filter((l) => {
+      const pid = safeStr(l.product_id);
+      return pid.startsWith('RM_') || pid.startsWith('PROC_');
+    });
+
+    for (const rmLot of rmLikeLots) {
+      const rmNo = rmLot.lot_no;
+      const already = trace.some((r) => r.parent_lot_no === rmNo || r.child_lot_no === rmNo);
+      if (already) continue;
+
+      const rmYmd = toYmd(rmLot.date || rmLot.created_at);
+      const sorted = fgIndex
+        .slice()
+        .sort((a, b) => dateDistanceDays(a.ymd, rmYmd) - dateDistanceDays(b.ymd, rmYmd));
+
+      for (const pick of sorted.slice(0, forwardCoverLinksPerRmLot)) {
+        const fg = pick.lot;
+        const componentId = rmLot.product_id || 'RM_UNKNOWN';
+        const rel = {
+          parent_lot_no: fg.lot_no,
+          child_lot_no: rmNo,
+          component_id: componentId,
+          input_qty: 1
+        };
+        const k = keyOf(rel);
+        if (existing.has(k)) continue;
+        existing.add(k);
+        trace.push(rel);
+      }
+    }
+  }
+
+  db.lot_traceability = trace;
+}
+
+function ensureLotsForAllDefectLots(db) {
+  const defectLogs = db.defect_logs || [];
+  const lots = Array.isArray(db.lots) ? db.lots : [];
+  const lotByNo = new Map(lots.map((l) => [l.lot_no, l]));
+
+  for (const d of defectLogs) {
+    const lotNo = d?.lot_no;
+    if (!lotNo) continue;
+    if (lotByNo.has(lotNo)) continue;
+
+    const createdAt = d.created_at || d.updated_at || '';
+    const lot = {
+      lot_no: lotNo,
+      product_id: d.product_id || '',
+      line_id: d.line_id || '',
+      date: toYmd(createdAt),
+      created_at: createdAt
+    };
+    lots.push(lot);
+    lotByNo.set(lotNo, lot);
+  }
+
+  db.lots = lots;
+}
+
+// initialData를 확장한 스냅샷을 만든 뒤 localStorage에 적재합니다.
+function buildInitialDB() {
+  // deep copy
+  const db = JSON.parse(JSON.stringify(initialData));
+  try {
+    // 1) defect_logs에 존재하는 모든 LOT을 lots에 반영(요구: 모든 lot 커버)
+    ensureLotsForAllDefectLots(db);
+    expandInitialBoms(db, { fgMin: 8, rmMin: 2, otherMin: 1 });
+    expandInitialTraceability(db, { maxMaterialsPerLot: Number.POSITIVE_INFINITY, forwardCoverLinksPerRmLot: 3 });
+  } catch {
+    // no-op (최악의 경우에도 최소 initialData는 유지)
+  }
+  return db;
+}
+
 // LocalStorage Key
 const STORAGE_KEY = 'cloud_qm_db_v4';
+const CURRENT_SCHEMA_VERSION = 7;
 
 // Service Class
 class MockDataService {
@@ -51031,13 +51519,61 @@ class MockDataService {
   }
 
   init() {
-    if (!localStorage.getItem(STORAGE_KEY)) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(initialData));
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(buildInitialDB()));
+      return;
+    }
+
+    // 마이그레이션: 기존 localStorage가 있더라도 schema_version이 낮으면 초기 DB를 재구성해 덮어씁니다.
+    // (요구: 웹에서 생성하지 말고 "내부 DB"에 직접 반영)
+    try {
+      const existing = JSON.parse(raw);
+      const v = Number(existing?.__schema_version || 0);
+      if (v < CURRENT_SCHEMA_VERSION) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(buildInitialDB()));
+      }
+    } catch {
+      // 파손된 경우에도 복구
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(buildInitialDB()));
     }
   }
 
   getDB() {
     return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+  }
+
+  setDB(db) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+  }
+
+  /**
+   * Append / upsert traceability relations.
+   * De-duplicates by (parent_lot_no, child_lot_no, component_id).
+   */
+  upsertLotTraceability(relations) {
+    if (!Array.isArray(relations) || relations.length === 0) return;
+    const db = this.getDB();
+    const current = Array.isArray(db.lot_traceability) ? db.lot_traceability : [];
+    const keyOf = (r) => `${r.parent_lot_no}__${r.child_lot_no}__${r.component_id}`;
+    const existing = new Set(current.map(keyOf));
+    const next = [...current];
+
+    relations.forEach((r) => {
+      if (!r?.parent_lot_no || !r?.child_lot_no || !r?.component_id) return;
+      const key = keyOf(r);
+      if (existing.has(key)) return;
+      existing.add(key);
+      next.push({
+        parent_lot_no: r.parent_lot_no,
+        child_lot_no: r.child_lot_no,
+        component_id: r.component_id,
+        input_qty: r.input_qty ?? 1
+      });
+    });
+
+    db.lot_traceability = next;
+    this.setDB(db);
   }
 
   saveDB(db) {
@@ -51114,6 +51650,529 @@ class MockDataService {
     db.ai_events = [...newEvents, ...(db.ai_events || [])];
     this.saveDB(db);
     return newEvents;
+  }
+
+  /**
+   * defect_logs에 존재하는 LOT들이 추적 가능하도록, lots/lot_traceability를 일괄 보강합니다.
+   * - FG LOT: product_id 기준 BOM을 찾아 FG->RM 관계를 생성
+   * - lots에 해당 LOT이 없으면 최소 메타(라인/일자)와 함께 생성
+   */
+  ensureTraceabilityForDefectLots(options = {}) {
+    const {
+      maxMaterialsPerLot = Number.POSITIVE_INFINITY,
+      maxLotsToProcess = 9999
+    } = options;
+
+    const db = this.getDB();
+
+    const defectLogs = db.defect_logs || [];
+    const boms = db.boms || [];
+    const lots = db.lots || [];
+
+    const uniqLots = Array.from(new Set(defectLogs.map((d) => d?.lot_no).filter(Boolean))).slice(0, maxLotsToProcess);
+
+    // helpers
+    const toYmd = (v) => {
+      const s = v == null ? '' : String(v);
+      return s.length >= 10 ? s.substring(0, 10) : s;
+    };
+    const dateDistanceDays = (aYmd, bYmd) => {
+      try {
+        const a = new Date(aYmd);
+        const b = new Date(bYmd);
+        return Math.abs((a.getTime() - b.getTime()) / (1000 * 60 * 60 * 24));
+      } catch {
+        return Number.POSITIVE_INFINITY;
+      }
+    };
+
+    // index existing lots by lot_no
+    const lotByNo = new Map(lots.map((l) => [l.lot_no, l]));
+
+    // RM candidates (prefer existing RM lots)
+    const rmLots = lots.filter((l) => String(l.product_id || '').startsWith('RM_'));
+    const pickRmLot = (materialId, fgDateYmd) => {
+      const candidates = rmLots.filter((l) => l.product_id === materialId);
+      if (candidates.length === 0) return null;
+      const same = candidates.find((c) => toYmd(c.date || c.created_at) === fgDateYmd);
+      if (same) return same;
+      let best = candidates[0];
+      let bestDist = dateDistanceDays(toYmd(best.date || best.created_at), fgDateYmd);
+      for (const c of candidates.slice(1)) {
+        const dist = dateDistanceDays(toYmd(c.date || c.created_at), fgDateYmd);
+        if (dist < bestDist) {
+          best = c;
+          bestDist = dist;
+        }
+      }
+      return best;
+    };
+
+    const createdLots = [];
+    const relations = [];
+
+  // FG defect lots 먼저 보강
+  for (const lotNo of uniqLots) {
+      // find a representative defect log row to infer meta
+      const row = defectLogs.find((d) => d?.lot_no === lotNo);
+      if (!row) continue;
+
+      // ensure lot master exists
+      let lot = lotByNo.get(lotNo);
+      if (!lot) {
+        // Create a minimal lot record based on defect log context
+        lot = {
+          lot_no: lotNo,
+          product_id: row.product_id || '',
+          line_id: row.line_id || '',
+          date: row.created_at ? toYmd(row.created_at) : '',
+          created_at: row.created_at || ''
+        };
+        lots.push(lot);
+        lotByNo.set(lotNo, lot);
+        createdLots.push(lot);
+      }
+
+      const productId = row.product_id || lot.product_id;
+      if (!productId || !String(productId).startsWith('FG_')) {
+        // 지금 mock defect_logs는 FG 기준으로 구성되어 있어 FG만 보강합니다.
+        continue;
+      }
+
+      const bom = boms.find((b) => b.product_id === productId);
+      if (!bom?.materials?.length) continue;
+
+      const fgDate = toYmd(row.created_at || lot.date || lot.created_at);
+      const mats = Number.isFinite(maxMaterialsPerLot)
+        ? bom.materials.slice(0, maxMaterialsPerLot)
+        : bom.materials;
+
+      for (const m of mats) {
+        const rmLot = pickRmLot(m.material_id, fgDate);
+        if (!rmLot) continue;
+        relations.push({
+          parent_lot_no: lotNo,
+          child_lot_no: rmLot.lot_no,
+          component_id: m.material_id,
+          input_qty: m.qty
+        });
+      }
+    }
+
+    // 정추적 데모 커버: RM/WIP LOT을 입력해도 사용처(FG)를 보여주기 위한 추가 관계 생성
+    // - 기존 FG->RM 관계(relations)를 이용해 역인덱스(RM LOT -> FG LOT)을 만들고
+    // - 특정 RM LOT이 lot_traceability에 전혀 없을 경우에는, 날짜/라인이 가까운 FG defect lot을 1~3개 연결
+    try {
+      const trace = db.lot_traceability || [];
+      const tracePairs = new Set(trace.map((r) => `${r.parent_lot_no}__${r.child_lot_no}__${r.component_id}`));
+
+      const fgLots = uniqLots
+        .map((ln) => ({ ln, row: defectLogs.find((d) => d?.lot_no === ln) }))
+        .filter((x) => x.row && String(x.row.product_id || '').startsWith('FG_'))
+        .map((x) => ({
+          lot_no: x.ln,
+          created_at: x.row.created_at || '',
+          line_id: x.row.line_id || '',
+          product_id: x.row.product_id || ''
+        }));
+
+      const fgByDate = fgLots.map((l) => ({ ...l, ymd: toYmd(l.created_at) }));
+
+      const rmLikeLots = lots.filter((l) => {
+        const pid = String(l.product_id || '');
+        return pid.startsWith('RM_') || pid.startsWith('PROC_');
+      });
+
+      for (const rmLot of rmLikeLots) {
+        const rmNo = rmLot.lot_no;
+
+        // 이미 trace에 등장하면 스킵
+        const already = trace.some((r) => r.parent_lot_no === rmNo || r.child_lot_no === rmNo);
+        if (already) continue;
+
+        const rmDate = toYmd(rmLot.date || rmLot.created_at);
+
+        // 날짜가 같은 FG 우선, 없으면 근접 날짜
+        let candidatesFg = fgByDate.filter((f) => f.ymd && rmDate && f.ymd === rmDate);
+        if (candidatesFg.length === 0 && rmDate) {
+          // nearest 5 by date
+          candidatesFg = fgByDate
+            .slice()
+            .sort((a, b) => dateDistanceDays(a.ymd, rmDate) - dateDistanceDays(b.ymd, rmDate))
+            .slice(0, 5);
+        }
+
+        // 최대 3개만 연결
+        for (const fg of candidatesFg.slice(0, 3)) {
+          // component_id가 불명확하므로 RM LOT의 product_id를 component로 사용
+          const componentId = rmLot.product_id || 'RM_UNKNOWN';
+          const key = `${fg.lot_no}__${rmNo}__${componentId}`;
+          if (tracePairs.has(key)) continue;
+          relations.push({
+            parent_lot_no: fg.lot_no,
+            child_lot_no: rmNo,
+            component_id: componentId,
+            input_qty: 1
+          });
+          tracePairs.add(key);
+        }
+      }
+    } catch {
+      // no-op
+    }
+
+    // Persist: lots 먼저 저장
+    if (createdLots.length) {
+      db.lots = lots;
+      this.setDB(db);
+    }
+
+    // upsertLotTraceability는 내부에서 getDB()/setDB()를 사용하므로,
+    // 여기서는 최신 DB를 다시 읽어 최종 snapshot을 저장합니다.
+    if (relations.length) {
+      this.upsertLotTraceability(relations);
+    }
+
+    // Persist final snapshot (defensive)
+    this.setDB(this.getDB());
+
+    return { lotsCreated: createdLots.length, relationsCreated: relations.length, processed: uniqLots.length };
+  }
+
+  /**
+   * FG 품목/LOT에 대해 '적절한' BOM이 항상 존재하도록 보강합니다.
+   * - defect_logs / lots 에 등장하는 FG product_id를 수집
+   * - BOM이 없으면 신규 생성
+   * - BOM이 있으나 자재가 너무 적으면(RM 자재로) 자동 보충
+   *
+   * 주의: 실서비스에선 설계 변경관리(ECN) 하에서 관리돼야 하며,
+   * 여기서는 프로토타입에서 '항상 추적되게' 하기 위한 데모 목적입니다.
+   */
+  ensureBomForAllLots(options = {}) {
+    const {
+      minMaterialsPerBom = 8,
+      maxMaterialsPerBom = 10
+    } = options;
+
+    const db = this.getDB();
+    const boms = db.boms || [];
+    const lots = db.lots || [];
+    const defectLogs = db.defect_logs || [];
+    const items = db.items || [];
+
+    const fgProducts = new Set();
+    for (const l of lots) {
+      if (String(l.product_id || '').startsWith('FG_')) fgProducts.add(l.product_id);
+    }
+    for (const d of defectLogs) {
+      if (String(d.product_id || '').startsWith('FG_')) fgProducts.add(d.product_id);
+    }
+
+    const rmItems = items.filter((i) => String(i.item_id || '').startsWith('RM_'));
+    const pickRandom = (arr, n) => {
+      const a = arr.slice();
+      // Fisher–Yates shuffle (deterministic-ish with Math.random)
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a.slice(0, Math.min(n, a.length));
+    };
+
+    let created = 0;
+    let updated = 0;
+
+    for (const fg of fgProducts) {
+      let bom = boms.find((b) => b.product_id === fg);
+      if (!bom) {
+        const targetCount = Math.max(minMaterialsPerBom, Math.min(maxMaterialsPerBom, minMaterialsPerBom));
+        const picks = pickRandom(rmItems, targetCount);
+        bom = {
+          product_id: fg,
+          materials: picks.map((p) => ({
+            material_id: p.item_id,
+            qty: 1 + Math.floor(Math.random() * 4)
+          }))
+        };
+        boms.push(bom);
+        created += 1;
+        continue;
+      }
+
+      const materials = Array.isArray(bom.materials) ? bom.materials : [];
+      const ids = new Set(materials.map((m) => m.material_id));
+
+      if (materials.length < minMaterialsPerBom) {
+        const need = Math.min(maxMaterialsPerBom, minMaterialsPerBom) - materials.length;
+        const candidates = rmItems.filter((i) => !ids.has(i.item_id));
+        const add = pickRandom(candidates, Math.max(0, need));
+        add.forEach((p) => {
+          materials.push({ material_id: p.item_id, qty: 1 + Math.floor(Math.random() * 4) });
+          ids.add(p.item_id);
+        });
+        bom.materials = materials;
+        updated += 1;
+      }
+    }
+
+    db.boms = boms;
+    this.setDB(db);
+    return { created, updated, fgCount: fgProducts.size };
+  }
+
+  /**
+   * 모든 item_id에 대해 BOM 엔트리가 존재하도록 생성/보강합니다.
+   * (프로토타입/데모 목적: 화면에서 "BOM이 없어서 추적이 안 됨"을 제거)
+   *
+   * 규칙(현실 모델과 다를 수 있음):
+   * - FG_*: RM_* 자재 8~10개
+   * - RM_*: 다른 RM_* 자재 2~4개 (부자재/포장재/소모품 개념)
+   * - PROC_* / 기타: 공통 자재 1~2개 (더미)
+   */
+  ensureBomForAllItems(options = {}) {
+    const {
+      fgMin = 8,
+      fgMax = 10,
+      rmMin = 2,
+      rmMax = 4,
+      otherMin = 1,
+      otherMax = 2
+    } = options;
+
+    const db = this.getDB();
+    const boms = db.boms || [];
+    const items = db.items || [];
+
+    const rmItems = items.filter((i) => String(i.item_id || '').startsWith('RM_'));
+    const allMaterials = rmItems.length ? rmItems : items;
+
+    const pickN = (arr, n, excludeId) => {
+      const pool = arr.filter((x) => x?.item_id && x.item_id !== excludeId);
+      if (pool.length === 0) return [];
+      const a = pool.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a.slice(0, Math.min(n, a.length));
+    };
+
+    const ensureMaterials = (productId, targetMin, targetMax, materialPool) => {
+      let bom = boms.find((b) => b.product_id === productId);
+      const targetCount = Math.max(targetMin, Math.min(targetMax, targetMin));
+
+      if (!bom) {
+        const picks = pickN(materialPool, targetCount, productId);
+        bom = {
+          product_id: productId,
+          materials: picks.map((p) => ({ material_id: p.item_id, qty: 1 + Math.floor(Math.random() * 4) }))
+        };
+        boms.push(bom);
+        return { created: 1, updated: 0 };
+      }
+
+      const materials = Array.isArray(bom.materials) ? bom.materials : [];
+      const ids = new Set(materials.map((m) => m.material_id));
+      const minNeed = targetMin;
+
+      // 부족하면 min까지 채우고, 너무 많으면 그대로 둠(데모에서는 과한 삭제 지양)
+      if (materials.length < minNeed) {
+        const need = minNeed - materials.length;
+        const candidates = materialPool.filter((i) => i.item_id && !ids.has(i.item_id) && i.item_id !== productId);
+        const add = pickN(candidates, need, productId);
+        add.forEach((p) => {
+          materials.push({ material_id: p.item_id, qty: 1 + Math.floor(Math.random() * 4) });
+          ids.add(p.item_id);
+        });
+        bom.materials = materials;
+        return { created: 0, updated: 1 };
+      }
+
+      // 0개인 경우(엣지) 최소 1개라도 보장
+      if (materials.length === 0) {
+        const add = pickN(materialPool, 1, productId);
+        add.forEach((p) => materials.push({ material_id: p.item_id, qty: 1 }));
+        bom.materials = materials;
+        return { created: 0, updated: 1 };
+      }
+
+      return { created: 0, updated: 0 };
+    };
+
+    let created = 0;
+    let updated = 0;
+
+    for (const it of items) {
+      const id = it?.item_id;
+      if (!id) continue;
+
+      if (String(id).startsWith('FG_')) {
+        const r = ensureMaterials(id, fgMin, fgMax, rmItems);
+        created += r.created;
+        updated += r.updated;
+      } else if (String(id).startsWith('RM_')) {
+        const r = ensureMaterials(id, rmMin, rmMax, rmItems);
+        created += r.created;
+        updated += r.updated;
+      } else {
+        const r = ensureMaterials(id, otherMin, otherMax, allMaterials);
+        created += r.created;
+        updated += r.updated;
+      }
+    }
+
+    db.boms = boms;
+    this.setDB(db);
+    return { created, updated, itemCount: items.length };
+  }
+
+  /**
+   * 모든 FG LOT에 대해 BOM 기반으로 lot_traceability 관계를 생성/보강합니다.
+   * - FG LOT(product_id) -> BOM(materials)
+   * - material_id 별 RM LOT을 매칭(동일 날짜 우선, 없으면 가장 가까운 날짜)
+   * - 결과를 lot_traceability에 upsert
+   *
+   * 데모 목적: BOM이 '있기만' 하면 LOT 추적이 항상 가능하도록 연결 데이터를 만들어 줍니다.
+   */
+  ensureTraceabilityForAllLotsFromBom(options = {}) {
+    const {
+      maxFgLots = Number.POSITIVE_INFINITY,
+      maxMaterialsPerLot = Number.POSITIVE_INFINITY,
+      // forward(사용처) 커버: RM/PROC LOT이 입력되어도 FG가 보이도록 추가 링크를 생성
+      // - 해당 LOT이 trace에 전혀 등장하지 않으면 날짜가 가까운 FG LOT 1~N개에 연결
+      forwardCoverLinksPerRmLot = 3
+    } = options;
+
+    const db = this.getDB();
+    const lots = db.lots || [];
+    const boms = db.boms || [];
+    const trace = db.lot_traceability || [];
+
+    const safeStr = (v) => (v == null ? '' : String(v));
+    const toYmd = (v) => {
+      const s = safeStr(v);
+      return s.length >= 10 ? s.substring(0, 10) : s;
+    };
+    const dateDistanceDays = (aYmd, bYmd) => {
+      try {
+        const a = new Date(aYmd);
+        const b = new Date(bYmd);
+        return Math.abs((a.getTime() - b.getTime()) / (1000 * 60 * 60 * 24));
+      } catch {
+        return Number.POSITIVE_INFINITY;
+      }
+    };
+
+    const rmLots = lots.filter((l) => safeStr(l.product_id).startsWith('RM_'));
+
+    const pickRmLot = (materialId, fgYmd) => {
+      const candidates = rmLots.filter((l) => l.product_id === materialId);
+      if (candidates.length === 0) return null;
+
+      const same = fgYmd ? candidates.find((c) => toYmd(c.date || c.created_at) === fgYmd) : null;
+      if (same) return same;
+
+      if (!fgYmd) return candidates[0];
+
+      let best = candidates[0];
+      let bestDist = dateDistanceDays(toYmd(best.date || best.created_at), fgYmd);
+      for (const c of candidates.slice(1)) {
+        const dist = dateDistanceDays(toYmd(c.date || c.created_at), fgYmd);
+        if (dist < bestDist) {
+          best = c;
+          bestDist = dist;
+        }
+      }
+      return best;
+    };
+
+    // 중복 키 방지(parent/child/component)
+  const existing = new Set(trace.map((r) => `${r.parent_lot_no}__${r.child_lot_no}__${r.component_id}`));
+
+    const fgLots = lots.filter((l) => safeStr(l.product_id).startsWith('FG_'))
+      .slice(0, Number.isFinite(maxFgLots) ? maxFgLots : lots.length);
+
+  const relations = [];
+    for (const fgLot of fgLots) {
+      const productId = fgLot.product_id;
+      const bom = boms.find((b) => b.product_id === productId);
+      if (!bom?.materials?.length) continue;
+
+      const fgYmd = toYmd(fgLot.date || fgLot.created_at);
+      const mats = Number.isFinite(maxMaterialsPerLot)
+        ? bom.materials.slice(0, maxMaterialsPerLot)
+        : bom.materials;
+
+      for (const m of mats) {
+        const rmLot = pickRmLot(m.material_id, fgYmd);
+        if (!rmLot) continue;
+        const key = `${fgLot.lot_no}__${rmLot.lot_no}__${m.material_id}`;
+        if (existing.has(key)) continue;
+        relations.push({
+          parent_lot_no: fgLot.lot_no,
+          child_lot_no: rmLot.lot_no,
+          component_id: m.material_id,
+          input_qty: m.qty
+        });
+        existing.add(key);
+      }
+    }
+
+    // forward 커버: RM/PROC LOT이 입력돼도 사용처가 나오도록, trace에 전혀 안 걸린 LOT을 FG에 연결
+    // (원리: trace는 FG->RM이므로, forward 탐색에선 RM을 root로 했을 때 child->parent 방향으로 확장됩니다)
+    try {
+      const toYmdSafe = (lot) => toYmd(lot?.date || lot?.created_at);
+
+      // FG LOT 인덱스(날짜 기준)
+      const fgIndex = fgLots.map((l) => ({ lot: l, ymd: toYmdSafe(l) })).filter((x) => x.ymd);
+
+      const rmLikeLots = lots.filter((l) => {
+        const pid = safeStr(l.product_id);
+        return pid.startsWith('RM_') || pid.startsWith('PROC_');
+      });
+
+      const linksPer = Number.isFinite(forwardCoverLinksPerRmLot) ? forwardCoverLinksPerRmLot : 0;
+      if (linksPer > 0 && fgIndex.length > 0) {
+        for (const rmLot of rmLikeLots) {
+          const rmNo = rmLot.lot_no;
+
+          // trace에 이미 등장(부모/자식)하면 스킵
+          const already = trace.some((r) => r.parent_lot_no === rmNo || r.child_lot_no === rmNo)
+            || relations.some((r) => r.parent_lot_no === rmNo || r.child_lot_no === rmNo);
+          if (already) continue;
+
+          const rmYmd = toYmdSafe(rmLot);
+          const sorted = fgIndex
+            .slice()
+            .sort((a, b) => dateDistanceDays(a.ymd, rmYmd) - dateDistanceDays(b.ymd, rmYmd));
+
+          for (const pick of sorted.slice(0, linksPer)) {
+            const fg = pick.lot;
+            const componentId = rmLot.product_id || 'RM_UNKNOWN';
+            const key = `${fg.lot_no}__${rmNo}__${componentId}`;
+            if (existing.has(key)) continue;
+            relations.push({
+              parent_lot_no: fg.lot_no,
+              child_lot_no: rmNo,
+              component_id: componentId,
+              input_qty: 1
+            });
+            existing.add(key);
+          }
+        }
+      }
+    } catch {
+      // no-op
+    }
+
+    if (relations.length) {
+      this.upsertLotTraceability(relations);
+    }
+
+    // defensive snapshot
+    this.setDB(this.getDB());
+
+    return { fgLots: fgLots.length, relationsCreated: relations.length };
   }
 }
 

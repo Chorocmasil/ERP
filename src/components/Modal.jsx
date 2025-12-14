@@ -24,6 +24,8 @@ const Modal = ({ isOpen, onClose, title, children }) => {
     borderRadius: 'var(--radius-lg)',
     width: '100%',
     maxWidth: '500px',
+    maxHeight: 'calc(100vh - 4rem)',
+    overflow: 'auto',
     padding: '1.5rem',
     boxShadow: 'var(--shadow-lg)',
     position: 'relative',

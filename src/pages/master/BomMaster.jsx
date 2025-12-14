@@ -1,24 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import { dataService } from '../../services/mockData';
 import Table from '../../components/Table';
 import Modal from '../../components/Modal';
 import { Plus, Trash2 } from 'lucide-react';
 
 const BomMaster = () => {
-  const [boms, setBoms] = useState([]);
-  const [items, setItems] = useState([]);
+  const [boms, setBoms] = useState(() => dataService.getAll('boms'));
+  const [items, setItems] = useState(() => dataService.getAll('items'));
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
   const [formData, setFormData] = useState({ product_id: '', materials: [] });
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const loadData = () => {
     setBoms(dataService.getAll('boms'));
     setItems(dataService.getAll('items'));
   };
+
+  // 초기 데이터는 localStorage 기반 동기 API이므로, useState 초기값으로 로딩합니다.
 
   const handleOpenModal = (item = null) => {
     if (item) {
@@ -74,15 +72,27 @@ const BomMaster = () => {
   };
 
   const columns = [
+    { key: 'product_name', label: 'Product' },
     { key: 'product_id', label: 'Product ID' },
     { key: 'material_count', label: 'Materials Count' },
   ];
 
   // Transform data for display
-  const displayData = boms.map(b => ({
-    ...b,
-    material_count: b.materials.length
-  }));
+  const displayData = useMemo(
+    () => {
+      const itemById = new Map(items.map((i) => [i.item_id, i]));
+      return boms.map((b) => {
+        const it = itemById.get(b.product_id);
+        const name = it?.item_name ? `${it.item_name}${it.type ? ` [${it.type}]` : ''}` : '미정(마스터에 없음)';
+        return {
+          ...b,
+          product_name: name,
+          material_count: Array.isArray(b.materials) ? b.materials.length : 0
+        };
+      });
+    },
+    [boms, items]
+  );
 
   const inputStyle = {
     width: '100%',
@@ -111,6 +121,12 @@ const BomMaster = () => {
         </button>
       </div>
 
+      <div style={{ margin: '-1rem 0 1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+        <div style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
+          현재 BOM 엔트리: <b style={{ color: 'var(--text-primary)' }}>{boms.length}</b>개 / 아이템: <b style={{ color: 'var(--text-primary)' }}>{items.length}</b>개
+        </div>
+      </div>
+
       <Table
         columns={columns}
         data={displayData}
@@ -134,9 +150,9 @@ const BomMaster = () => {
               required
             >
               <option value="">Select Product</option>
-              {items.filter(i => i.type === 'FG').map(item => (
+              {items.map(item => (
                 <option key={item.item_id} value={item.item_id}>
-                  {item.item_name} ({item.item_id})
+                  {item.item_name} ({item.item_id}){item.type ? ` [${item.type}]` : ''}
                 </option>
               ))}
             </select>
@@ -158,9 +174,9 @@ const BomMaster = () => {
                   required
                 >
                   <option value="">Select Material</option>
-                  {items.filter(i => i.type === 'RM').map(item => (
+                  {(items.some((i) => i.type === 'RM') ? items.filter(i => i.type === 'RM') : items).map(item => (
                     <option key={item.item_id} value={item.item_id}>
-                      {item.item_name}
+                      {item.item_name} ({item.item_id}){item.type ? ` [${item.type}]` : ''}
                     </option>
                   ))}
                 </select>

@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   /* Light Theme Palette */
   --bg-primary: #f4f7fe; /* Light background for the app */

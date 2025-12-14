@@ -1,21 +1,18 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useMemo, useState } from 'react';
 import { dataService } from '../../services/mockData';
 import Table from '../../components/Table';
 import Modal from '../../components/Modal';
 import { Filter, Save, AlertTriangle, Search } from 'lucide-react';
 import { useUser } from '../../context/UserContext';
+import { Link } from 'react-router-dom';
 
 const DefectLogList = () => {
   const { currentUser } = useUser();
-  const [logs, setLogs] = useState([]);
-  const [filteredLogs, setFilteredLogs] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingLog, setEditingLog] = useState(null);
   
   // Master Data for Selects
-  const [causeCodes, setCauseCodes] = useState([]);
-  const [defectCodes, setDefectCodes] = useState([]);
-  const [availableLines, setAvailableLines] = useState([]);
+  const causeCodes = useMemo(() => dataService.getAll('cause_codes'), []);
 
   // Filters
   const [filters, setFilters] = useState({
@@ -24,47 +21,44 @@ const DefectLogList = () => {
     status: 'all'
   });
 
-  const loadData = useCallback(() => {
-    let allLogs = dataService.getAll('defect_logs').sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-    let lines = dataService.getAll('process_lines');
-    
+  const { logs, lines } = useMemo(() => {
+    let allLogs = dataService
+      .getAll('defect_logs')
+      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    let allLines = dataService.getAll('process_lines');
+
     if (currentUser !== 'Project Manager') {
-      lines = lines.filter(l => l.manager === currentUser);
-      const lineIds = lines.map(l => l.line_id);
-      allLogs = allLogs.filter(l => lineIds.includes(l.line_id));
+      allLines = allLines.filter((l) => l.manager === currentUser);
+      const lineIds = allLines.map((l) => l.line_id);
+      allLogs = allLogs.filter((l) => lineIds.includes(l.line_id));
     }
 
-    setLogs(allLogs);
-    setAvailableLines(lines);
-    setCauseCodes(dataService.getAll('cause_codes'));
-    setDefectCodes(dataService.getAll('defect_codes'));
+    return { logs: allLogs, lines: allLines };
   }, [currentUser]);
 
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
+  const availableLines = lines;
 
-  useEffect(() => {
+  const filteredLogs = useMemo(() => {
     let result = logs;
-    
+
     // Filter by LOT No
     if (filters.lot_no) {
-      result = result.filter(l => l.lot_no.toLowerCase().includes(filters.lot_no.toLowerCase()));
-    }
-    
-    // Filter by Line (Toggle)
-    if (filters.line_id !== 'all') {
-      result = result.filter(l => l.line_id === filters.line_id);
-    }
-    
-    // Filter by Status (Toggle)
-    if (filters.status === 'open') {
-      result = result.filter(l => !l.action);
-    } else if (filters.status === 'resolved') {
-      result = result.filter(l => l.action);
+      result = result.filter((l) => l.lot_no.toLowerCase().includes(filters.lot_no.toLowerCase()));
     }
 
-    setFilteredLogs(result);
+    // Filter by Line (Toggle)
+    if (filters.line_id !== 'all') {
+      result = result.filter((l) => l.line_id === filters.line_id);
+    }
+
+    // Filter by Status (Toggle)
+    if (filters.status === 'open') {
+      result = result.filter((l) => !l.action);
+    } else if (filters.status === 'resolved') {
+      result = result.filter((l) => l.action);
+    }
+
+    return result;
   }, [logs, filters]);
 
   const handleEdit = (log) => {
@@ -80,7 +74,6 @@ const DefectLogList = () => {
   const handleSave = (e) => {
     e.preventDefault();
     dataService.update('defect_logs', 'defect_log_id', editingLog.defect_log_id, editingLog);
-    loadData();
     handleCloseModal();
   };
 
@@ -98,7 +91,16 @@ const DefectLogList = () => {
   const displayData = filteredLogs.map(l => ({
     ...l,
     created_at: new Date(l.created_at).toLocaleString(),
-    status: l.action ? '✅ Resolved' : '⚠️ Open'
+    status: l.action ? '✅ Resolved' : '⚠️ Open',
+    lot_no: (
+      <Link
+        to={`/qm/traceability?lot=${encodeURIComponent(l.lot_no || '')}&dir=backward`}
+        style={{ color: 'var(--accent-primary)', textDecoration: 'underline', textUnderlineOffset: '3px' }}
+        title="추적성 관리에서 LOT 조회"
+      >
+        {l.lot_no}
+      </Link>
+    )
   }));
 
   const inputStyle = {

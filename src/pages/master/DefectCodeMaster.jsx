@@ -16,13 +16,13 @@ const DefectCodeMaster = () => {
     iso_code: ''
   });
 
-  useEffect(() => {
-    loadCodes();
-  }, []);
-
   const loadCodes = () => {
     setCodes(dataService.getAll('defect_codes'));
   };
+
+  useEffect(() => {
+    loadCodes();
+  }, []);
 
   const handleOpenModal = (item = null) => {
     if (item) {
@@ -38,7 +38,10 @@ const DefectCodeMaster = () => {
         name: '',
         category: 'Acoustic',
         iso_group: defaultGroup,
-        iso_code: nextIso
+        iso_code: nextIso,
+        inspection_method: '',
+        criteria_text: '',
+        guide_image_url: ''
       });
     }
     setIsModalOpen(true);
@@ -83,6 +86,8 @@ const DefectCodeMaster = () => {
     { key: 'category', label: 'Category' },
     { key: 'iso_group', label: 'ISO Group' },
     { key: 'iso_code', label: 'ISO Code' },
+    { key: 'inspection_method', label: 'Method' },
+    { key: 'criteria_text', label: 'Criteria' },
   ];
 
   const inputStyle = {
@@ -176,6 +181,33 @@ const DefectCodeMaster = () => {
               style={{ ...inputStyle, backgroundColor: 'var(--bg-tertiary)', cursor: 'not-allowed' }}
               value={formData.iso_code}
               readOnly
+            />
+          </div>
+          <div>
+            <label style={labelStyle}>Inspection Method</label>
+            <input
+              style={inputStyle}
+              value={formData.inspection_method || ''}
+              onChange={(e) => setFormData({ ...formData, inspection_method: e.target.value })}
+              placeholder="e.g. Visual, Gauge, Sensor"
+            />
+          </div>
+          <div>
+            <label style={labelStyle}>Criteria Text</label>
+            <textarea
+              style={{...inputStyle, minHeight: '80px', resize: 'vertical'}}
+              value={formData.criteria_text || ''}
+              onChange={(e) => setFormData({ ...formData, criteria_text: e.target.value })}
+              placeholder="Describe the defect criteria..."
+            />
+          </div>
+          <div>
+            <label style={labelStyle}>Guide Image URL</label>
+            <input
+              style={inputStyle}
+              value={formData.guide_image_url || ''}
+              onChange={(e) => setFormData({ ...formData, guide_image_url: e.target.value })}
+              placeholder="https://..."
             />
           </div>
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', marginTop: '1rem' }}>

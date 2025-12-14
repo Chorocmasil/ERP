@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Database, Activity, ClipboardList, Settings } from 'lucide-react';
+import { LayoutDashboard, Database, Activity, ClipboardList, Settings, BarChart2, GitMerge, MessageSquare } from 'lucide-react';
 
 import { useLanguage } from '../context/LanguageContext';
 import { useUser } from '../context/UserContext';
@@ -12,6 +12,9 @@ const Sidebar = () => {
 
   const menuItems = [
     { path: '/', label: t('dashboard'), icon: <LayoutDashboard size={20} /> },
+    { path: '/analytics/process', label: '공정 품질 분석', icon: <BarChart2 size={20} /> },
+    { path: '/qm/traceability', label: '추적성 관리', icon: <GitMerge size={20} /> },
+    { path: '/qm/claims', label: '클레임 관리', icon: <MessageSquare size={20} /> },
     { path: '/ai-events', label: t('aiEvents'), icon: <Activity size={20} /> },
     { path: '/defect-logs', label: t('defectLogs'), icon: <ClipboardList size={20} /> },
     ...(currentUser === 'Project Manager' ? [{ path: '/master', label: t('masterData'), icon: <Database size={20} /> }] : []),

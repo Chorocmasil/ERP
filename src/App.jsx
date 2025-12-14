@@ -14,6 +14,9 @@ import MachineMaster from './pages/master/MachineMaster';
 import DefectCodeMaster from './pages/master/DefectCodeMaster';
 import CauseCodeMaster from './pages/master/CauseCodeMaster';
 import LotMaster from './pages/master/LotMaster';
+import ProcessAnalytics from './pages/analytics/ProcessAnalytics';
+import TraceabilityView from './pages/qm/TraceabilityView';
+import ClaimManagement from './pages/qm/ClaimManagement';
 import './App.css';
 
 function App() {
@@ -24,6 +27,9 @@ function App() {
           <Routes>
             <Route path="/" element={<MainLayout />}>
               <Route index element={<Dashboard />} />
+              <Route path="analytics/process" element={<ProcessAnalytics />} />
+              <Route path="qm/traceability" element={<TraceabilityView />} />
+              <Route path="qm/claims" element={<ClaimManagement />} />
               <Route path="ai-events" element={<AIEventList />} />
               <Route path="defect-logs" element={<DefectLogList />} />
               <Route path="master" element={<MasterDashboard />} />
